@@ -1,0 +1,17 @@
+.chat-header {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 5px 25px;
+    border-bottom: 1px solid #f0f0f0;
+    line-height: 25px;
+}
+
+.chat-title {
+    font-weight: bold;
+}
+
+.chat-description {
+    font-size: 14px;
+    color: grey;
+}

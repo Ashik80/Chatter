@@ -1,0 +1,24 @@
+.user {
+    display: flex;
+    align-items: center;
+}
+
+.user-img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: white;
+    margin-right: 10px;
+}
+
+.user-status {
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    background-color: green;
+    margin-left: 7px;
+}
+
+.user-name {
+    font-weight: bold;
+}

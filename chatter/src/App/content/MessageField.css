@@ -1,0 +1,20 @@
+.message-field {
+    border-top: 1px solid #f0f0f0;
+    height: 40px;
+    padding: 10px;
+}
+
+.message-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    padding-left: 10px;
+    font-size: 15px;
+}
+
+.message:focus {
+    outline: none;
+    border: 1px solid #ffc14e;
+}

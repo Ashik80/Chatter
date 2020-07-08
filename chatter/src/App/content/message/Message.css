@@ -1,0 +1,24 @@
+.message {
+    padding: 10px;
+    display: flex;
+}
+
+.img-container {
+    height: 50px;
+    width: 50px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.name-date {
+    display: flex;
+}
+
+.name {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.date {
+    color: grey;
+}

@@ -1,0 +1,16 @@
+.content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+} 
+
+.message-container {
+    height: calc(100% - 90px);
+    border: 0px solid white;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+}
