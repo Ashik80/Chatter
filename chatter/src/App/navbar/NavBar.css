@@ -1,0 +1,25 @@
+.navbar {
+    display: flex;
+    height: 60px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 60px;
+    box-sizing: border-box;
+}
+
+.nav {
+    position: fixed;
+    width: 100vw;
+    background-color: white;
+    top: 0
+}
+
+.nav-list {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.nav-link {
+    margin-right: 20px;
+}

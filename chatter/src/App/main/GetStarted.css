@@ -1,0 +1,12 @@
+.get-started {
+    text-align: center;
+    height: 100vh;
+    padding-top: 30px;
+    box-sizing: border-box;
+}
+
+.signing-content-position {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}

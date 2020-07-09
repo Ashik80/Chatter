@@ -1,0 +1,11 @@
+.landing-content {
+    height: 100%;
+    box-sizing: border-box;
+    padding-top: 60px;
+}
+
+.info-position {
+    width: fit-content;
+    margin-top: 150px;
+    margin-left: 60px;
+}

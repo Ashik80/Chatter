@@ -1,0 +1,21 @@
+.landing-header {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.landing-description {
+    font-size: 30px;
+    margin-top: 20px;
+}
+
+.landing-info {
+    width: 40vw;
+}
+
+.button-group > * {
+    margin-right: 5px;
+}
+
+.button-group {
+    margin-top: 20px;
+}

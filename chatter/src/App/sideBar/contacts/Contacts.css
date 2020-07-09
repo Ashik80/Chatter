@@ -1,3 +1,25 @@
 .contacts {
     margin-bottom: 30px;
 }
+
+.contact-list {
+    padding-left: 10px;
+}
+
+.contact-header {
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.contact-header > i {
+    font-size: 10px;
+    margin-right: 5px;
+    transition: transform 300ms;
+}
+
+.active-icon {
+    transform: rotate(90deg);
+    transition: transform 300ms;
+}
