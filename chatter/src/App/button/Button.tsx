@@ -8,10 +8,11 @@ interface IProps {
     inverted?: boolean,
     fluid?: boolean,
     fontSize?: number,
-    onClick?: (any: any) => void
+    onClick?: () => void,
+    name?: string
 }
 
-const Button: React.FC<IProps> = ({ content, paddingX, paddingY, inverted, fluid, fontSize }) => {
+const Button: React.FC<IProps> = ({ content, paddingX, paddingY, inverted, fluid, fontSize, onClick, name }) => {
     const [active, setActive] = useState(false)
 
     const hoverHandler = () => {
@@ -66,6 +67,7 @@ const Button: React.FC<IProps> = ({ content, paddingX, paddingY, inverted, fluid
             style={active ? invertedBtnOnHover : invertedBtnStyle}
             onMouseOver={hoverHandler}
             onMouseOut={hoverOutHandler}
+            onClick={onClick}
         >
             {content}
         </button>
@@ -73,10 +75,12 @@ const Button: React.FC<IProps> = ({ content, paddingX, paddingY, inverted, fluid
 
     return (
         <button
+            name={name}
             className='styled-button'
             style={active ? btnOnHover : btnStyle}
             onMouseOver={hoverHandler}
             onMouseOut={hoverOutHandler}
+            onClick={onClick}
         >
             {content}
         </button>

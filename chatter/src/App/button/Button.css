@@ -3,3 +3,7 @@
     font-weight: bold;
     cursor: pointer;
 }
+
+.styled-button:focus {
+    outline: none;
+}

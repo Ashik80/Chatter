@@ -1,0 +1,19 @@
+.chatter-info {
+    width: 30vw;
+    text-align: left;
+}
+
+.info-header {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.info-header > i {
+    color: orange;
+    margin-right: 5px;
+}
+
+.info-description {
+    font-size: 15px;
+    color: grey;
+}
