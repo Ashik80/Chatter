@@ -16,9 +16,14 @@
     width: 8px;
     border-radius: 50%;
     background-color: green;
-    margin-left: 7px;
+    margin-left: 15px;
 }
 
 .user-name {
     font-weight: bold;
+}
+
+.user-code {
+    font-size: 14px;
+    color: #ccc;
 }

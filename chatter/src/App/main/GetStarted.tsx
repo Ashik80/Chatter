@@ -1,4 +1,4 @@
-import React, { useContext, SyntheticEvent } from 'react'
+import React from 'react'
 import Logo from '../navbar/Logo'
 import './GetStarted.css'
 import SigningContent from '../signingContent/SigningContent'

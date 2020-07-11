@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useContext } from 'react'
+import React, { useContext } from 'react'
 import Button from '../button/Button'
 import './SigningContent.css'
 import RegisterForm from '../loginForm/RegisterForm'
