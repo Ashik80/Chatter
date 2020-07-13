@@ -9,5 +9,7 @@ namespace Domain
         public string Image { get; set; }
         public string Code { get; set; }
         public ICollection<ChannelUser> ChannelUsers { get; set; }
+        public ICollection<Friends> Friends { get; set; }
+        public ICollection<FriendRequest> FriendRequests { get; set; }
     }
 }

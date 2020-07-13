@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200712153155_ChannelUserUpdated")]
+    partial class ChannelUserUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,36 +121,6 @@ namespace Persistence.Migrations
                     b.HasIndex("ChannelId");
 
                     b.ToTable("ChannelUser");
-                });
-
-            modelBuilder.Entity("Domain.FriendRequest", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("RequestId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("UserId", "RequestId");
-
-                    b.HasIndex("RequestId");
-
-                    b.ToTable("FriendRequest");
-                });
-
-            modelBuilder.Entity("Domain.Friends", b =>
-                {
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FriendId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("AppUserId", "FriendId");
-
-                    b.HasIndex("FriendId");
-
-                    b.ToTable("Friends");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -290,36 +262,6 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Channel", "Channel")
                         .WithMany("ChannelUsers")
                         .HasForeignKey("ChannelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.FriendRequest", b =>
-                {
-                    b.HasOne("Domain.AppUser", "Request")
-                        .WithMany()
-                        .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.AppUser", "User")
-                        .WithMany("FriendRequests")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Friends", b =>
-                {
-                    b.HasOne("Domain.AppUser", "AppUser")
-                        .WithMany("Friends")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.AppUser", "Friend")
-                        .WithMany()
-                        .HasForeignKey("FriendId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
