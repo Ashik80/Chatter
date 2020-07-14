@@ -1,16 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Form, Field } from 'react-final-form'
 import TextInput from '../formComponents/TextInput'
-import Button from '../button/Button'
 import './LoginForm.css'
+import SpecialButton from '../loginButtons/SpecialButton'
+import ModalStore from '../../stores/modalStore'
+import UserStore from '../../stores/userStore'
+import RegisterForm from './RegisterForm'
+import { ILoginFromValues } from '../../models/user'
 
 const LoginForm = () => {
+    const userStore = useContext(UserStore)
+    const modalStore = useContext(ModalStore)
+    const {openModal, closeModal} = modalStore
+    const {login} = userStore
+
     return (
         <div>
             <Form
-                onSubmit={(values) => console.log(values)}
-                render={({handleSubmit}) => (
-                    <form onSubmit={handleSubmit}>
+                onSubmit={(values: ILoginFromValues) => login(values).then(() => closeModal())}
+                render={({ handleSubmit }) => (
+                    <form onSubmit={handleSubmit} className='login-form'>
                         <div className='login-header'>Sign in to Chatter</div>
                         <Field name='email' component={TextInput} placeholder='Email' />
                         <Field
@@ -19,7 +28,20 @@ const LoginForm = () => {
                             component={TextInput}
                             placeholder='Password'
                         />
-                        <Button content='Sign in' fluid paddingY={10} />
+                        <br />
+                        <SpecialButton />
+                        <div className='login-extra'>
+                            <small>
+                                Don't have an account?
+                            </small>
+                            <br />
+                            <small
+                                className='login-extra-action'
+                                onClick={() => openModal(<RegisterForm />)}    
+                            >
+                                Create one
+                            </small>
+                        </div>
                     </form>
                 )}
             />

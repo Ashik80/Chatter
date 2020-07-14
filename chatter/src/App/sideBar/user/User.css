@@ -3,6 +3,12 @@
     align-items: center;
 }
 
+.user-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .user-img {
     height: 40px;
     width: 40px;
@@ -26,4 +32,12 @@
 .user-code {
     font-size: 14px;
     color: #ccc;
+}
+
+.logout-btn {
+    padding: 3px 7px;
+    color: white;
+    background-color: #424855;
+    border: none;
+    border-radius: 5px;
 }

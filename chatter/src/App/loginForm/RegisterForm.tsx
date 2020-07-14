@@ -1,16 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Form, Field } from 'react-final-form'
 import TextInput from '../formComponents/TextInput'
-import Button from '../button/Button'
 import './LoginForm.css'
+import SpecialButton from '../loginButtons/SpecialButton'
+import ModalStore from '../../stores/modalStore'
+import LoginForm from './LoginForm'
+import UserStore from '../../stores/userStore'
+import { IRegisterFormValues } from '../../models/user'
 
 const RegisterForm = () => {
+    const userStore = useContext(UserStore)
+    const modalStore = useContext(ModalStore)
+    const {openModal, closeModal} = modalStore
+    const {register} = userStore
+
     return (
         <div>
             <Form
-                onSubmit={(values) => console.log(values)}
+                onSubmit={(values: IRegisterFormValues) => register(values).then(() => closeModal())}
                 render={({handleSubmit}) => (
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} className='login-form'>
                         <div className='login-header'>Sign up on Chatter</div>
                         <Field name='displayName' placeholder='Display Name' component={TextInput} />
                         <Field name='userName' placeholder='User Name' component={TextInput} />
@@ -21,7 +30,20 @@ const RegisterForm = () => {
                             component={TextInput}
                             placeholder='Password'
                         />
-                        <Button content='Sign up' fluid paddingY={10} />
+                        <br />
+                        <SpecialButton />
+                        <div className='login-extra'>
+                            <small>
+                                Already have an account?
+                            </small>
+                            <br />
+                            <small 
+                                className='login-extra-action'
+                                onClick={() => openModal(<LoginForm />)}
+                            >
+                                Login
+                            </small>
+                        </div>
                     </form>
                 )}
             />

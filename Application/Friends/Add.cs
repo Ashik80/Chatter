@@ -41,6 +41,22 @@ namespace Application.Friends
                 var currentUser = await context.Users
                     .FirstOrDefaultAsync(x => x.UserName == userAccessor.GetCurrentUsername());
 
+                var existingFriendReq = await context.FriendRequest
+                    .AnyAsync(x => x.Request == currentUser && x.User == user);
+                
+                if(existingFriendReq)
+                {
+                    throw new RestException(HttpStatusCode.BadRequest, new{request = "Already exists"});
+                }
+
+                var existingFriend = await context.Friends
+                    .AnyAsync(x => x.AppUser == currentUser && x.Friend == user);
+                
+                if(existingFriend)
+                {
+                    throw new RestException(HttpStatusCode.BadRequest, new{friend = "Already exists"});
+                }
+
                 var friendRequest = new FriendRequest
                 {
                     User = user,

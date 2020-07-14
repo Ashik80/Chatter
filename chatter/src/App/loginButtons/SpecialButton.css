@@ -1,0 +1,8 @@
+.special-button {
+    color: white;
+    font-size: 40px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: none;
+    background-color: #282c34;
+}

@@ -1,6 +1,24 @@
 .login-header {
     font-size: 30px;
     font-weight: bold;
-    text-align: center;
     margin-bottom: 20px;
+}
+
+.login-form {
+    text-align: center;
+}
+
+.login-extra{
+    margin-top: 20px;
+    color: gray;
+}
+
+.login-extra-action {
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.login-extra-action:hover {
+    font-size: 15px;
 }

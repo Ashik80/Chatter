@@ -3,9 +3,9 @@ import { createContext } from 'react'
 
 class ModalStore {
     @observable open = false
-    @observable body = null
+    @observable body: JSX.Element | null = null
 
-    @action openModal = (body: any) => {
+    @action openModal = (body: JSX.Element) => {
         this.open = true
         this.body = body
     }

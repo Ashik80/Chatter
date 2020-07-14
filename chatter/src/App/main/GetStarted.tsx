@@ -13,7 +13,7 @@ const GetStarted = () => {
                     name='signup'
                     header='Try Chatter with your team'
                     description='Discover powerful, fast features and productive in the meantime.'
-                    buttonText='Sign up on slack'
+                    buttonText='Sign up on chatter'
                 />
                 <SigningContent
                     name='signin'

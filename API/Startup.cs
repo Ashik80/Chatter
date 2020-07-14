@@ -85,6 +85,13 @@ namespace API
             services.AddScoped<ICodeGenerator, CodeGenerator>();
 
             services.AddScoped<IUserAccessor, UserAccessor>();
+
+            services.AddCors(opt => {
+                opt.AddPolicy("CorsPolicy", policy => {
+                    policy.WithOrigins("http://localhost:3000")
+                        .AllowAnyHeader().AllowAnyMethod();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -99,6 +106,8 @@ namespace API
             // app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
 

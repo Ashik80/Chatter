@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Friends;
 using MediatR;
@@ -21,17 +22,34 @@ namespace API.Controllers
             return await mediator.Send(command);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Unit>> RemoveRequest(string id,
-                                                            string predicate)
+        [HttpDelete("requests/{id}")]
+        public async Task<ActionResult<Unit>> RemoveRequest(string id, string predicate)
         {
             return await mediator.Send(new RemoveRequest.Command{Id = id, Predicate = predicate});
         }
 
-        [HttpGet]
+        [HttpGet("requests")]
         public async Task<ActionResult<RequestDto>> ListRequest(string predicate)
         {
             return await mediator.Send(new ListRequest.Query(predicate));
+        }
+
+        [HttpPost("{id}")]
+        public async Task<ActionResult<Unit>> Accept(string id)
+        {
+            return await mediator.Send(new Accept.Command{Id = id});
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<FriendDto>>> List()
+        {
+            return await mediator.Send(new List.Query());
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Unit>> Delete(string id)
+        {
+            return await mediator.Send(new Delete.Command{Id = id});
         }
     }
 }
