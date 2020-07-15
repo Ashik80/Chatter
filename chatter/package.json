@@ -11,6 +11,7 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@types/react-router-dom": "^5.1.5",
+    "@types/uuid": "^8.0.0",
     "axios": "^0.19.2",
     "final-form": "^4.20.1",
     "mobx": "^5.15.4",
@@ -20,7 +21,8 @@
     "react-final-form": "^6.5.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "uuid": "^8.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -1,0 +1,20 @@
+.channel-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.channel-list > button > i {
+    color: red;
+}
+
+.channel-list > button {
+    background-color: #282c34;
+    border: none;
+    cursor: pointer;
+}
+
+.channel-list > button:focus {
+    outline: none;
+}

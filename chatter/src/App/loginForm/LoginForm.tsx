@@ -18,7 +18,7 @@ const LoginForm = () => {
         <div>
             <Form
                 onSubmit={(values: ILoginFromValues) => login(values).then(() => closeModal())}
-                render={({ handleSubmit }) => (
+                render={({ handleSubmit, submitting }) => (
                     <form onSubmit={handleSubmit} className='login-form'>
                         <div className='login-header'>Sign in to Chatter</div>
                         <Field name='email' component={TextInput} placeholder='Email' />
@@ -29,7 +29,7 @@ const LoginForm = () => {
                             placeholder='Password'
                         />
                         <br />
-                        <SpecialButton />
+                        <SpecialButton disabled={submitting} />
                         <div className='login-extra'>
                             <small>
                                 Don't have an account?

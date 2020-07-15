@@ -2,10 +2,17 @@ import React, { useContext } from 'react'
 import './User.css'
 import UserStore from '../../../stores/userStore'
 import { observer } from 'mobx-react-lite'
+import DropdownMenu from './DropdownMenu'
 
-const User = () => {
+interface IProps {
+    clickHandle: () => void,
+    dropdown: boolean
+}
+
+const User: React.FC<IProps> = ({clickHandle, dropdown}) => {
     const userStore = useContext(UserStore)
-    const { user } = userStore
+    const { user, logout } = userStore
+
 
     return (
         <div className='user-wrap'>
@@ -19,9 +26,12 @@ const User = () => {
                 </div>
                 <div className='user-status' />
             </div>
-            <button className='logout-btn'>
-                <i className='fas fa-sort-down' />
-            </button>
+            <div className='dropdown' onClick={e => e.stopPropagation()}>
+                <button className='logout-btn' onClick={clickHandle}>
+                    <i className='fas fa-sort-down' />
+                </button>
+                {dropdown && <DropdownMenu logout={logout} />}
+            </div>
         </div>
     )
 }

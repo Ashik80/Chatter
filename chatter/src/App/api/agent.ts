@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { ILoginFromValues, IUser, IRegisterFormValues } from '../../models/user'
+import { IChannel } from '../../models/channel'
 
 axios.defaults.baseURL = 'http://localhost:5000/api'
 
@@ -26,4 +27,10 @@ const User = {
     currentUser: (): Promise<IUser> => request.get('/users')
 }
 
-export default { User }
+const Channel = {
+    list: (): Promise<IChannel[]> => request.get('channels'),
+    add: (values: IChannel) => request.post('channels', values),
+    delete: (id: string) => request.del(`channels/${id}`)
+}
+
+export default { User, Channel }

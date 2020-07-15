@@ -18,7 +18,7 @@ const RegisterForm = () => {
         <div>
             <Form
                 onSubmit={(values: IRegisterFormValues) => register(values).then(() => closeModal())}
-                render={({handleSubmit}) => (
+                render={({handleSubmit, submitting}) => (
                     <form onSubmit={handleSubmit} className='login-form'>
                         <div className='login-header'>Sign up on Chatter</div>
                         <Field name='displayName' placeholder='Display Name' component={TextInput} />
@@ -31,7 +31,7 @@ const RegisterForm = () => {
                             placeholder='Password'
                         />
                         <br />
-                        <SpecialButton />
+                        <SpecialButton disabled={submitting} />
                         <div className='login-extra'>
                             <small>
                                 Already have an account?

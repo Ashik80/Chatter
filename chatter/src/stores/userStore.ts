@@ -9,7 +9,6 @@ configure({ enforceActions: 'always' })
 class UserStore {
     @observable user: IUser | null = null
     @observable loading = false
-    @observable token: string | null = null
 
     @computed get getToken() {
         return window.localStorage.getItem('jwt')
@@ -56,7 +55,6 @@ class UserStore {
     }
 
     @action currentUser = async () => {
-        this.token = this.getToken
         try {
             const user = await agent.User.currentUser()
             runInAction(() => {
@@ -66,6 +64,12 @@ class UserStore {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    @action logout = () => {
+        this.user = null
+        window.localStorage.removeItem('jwt')
+        history.push('/')
     }
 }
 

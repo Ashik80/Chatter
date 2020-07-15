@@ -8,18 +8,46 @@
 
 .contact-header {
     font-weight: bold;
-    cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
-.contact-header > i {
-    font-size: 10px;
+.contact-header > div {
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.contact-header > div > i {
     margin-right: 5px;
+    transition: transform 300ms;
+}
+
+.cancel-btn {
+    transform: rotate(45deg);
     transition: transform 300ms;
 }
 
 .active-icon {
     transform: rotate(90deg);
     transition: transform 300ms;
+}
+
+.add-contact-btn {
+    background-color: #282c34;
+    color: #828b9f;
+    border: none;
+    cursor: pointer;
+}
+
+.add-contact-btn > i {
+    transition: transform 300ms;
+}
+
+.add-contact-btn:hover {
+    color: white;
+}
+
+.add-contact-btn:focus {
+    outline: none;
 }

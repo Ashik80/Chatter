@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Channels;
 using MediatR;
@@ -36,6 +37,12 @@ namespace API.Controllers
         public async Task<ActionResult<Unit>> Delete(Guid id)
         {
             return await mediator.Send(new Delete.Command{Id = id});
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<ChannelDto>>> List()
+        {
+            return await mediator.Send(new List.Query());
         }
     }
 }

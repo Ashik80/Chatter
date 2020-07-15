@@ -40,4 +40,17 @@
     background-color: #424855;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-btn:focus {
+    outline: none;
+}
+
+.logout-btn:active {
+    background-color: #282c34;
+}
+
+.dropdown {
+    position: relative;
 }

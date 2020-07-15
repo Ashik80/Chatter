@@ -16,6 +16,7 @@ namespace Application.Channels
     {
         public class Command : IRequest
         {
+            public Guid Id { get; set; }
             public string Name { get; set; }
         }
 
@@ -49,7 +50,8 @@ namespace Application.Channels
 
                 var channel = new Channel
                 {
-                    Name = request.Name
+                    Id = request.Id,
+                    Name = "#" + request.Name
                 };
 
                 var channelUser = new ChannelUser

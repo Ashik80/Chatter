@@ -3,15 +3,29 @@ import './SideBar.css'
 import User from './user/User'
 import Contacts from './contacts/Contacts'
 
-const SideBar = () => {
+interface IProps {
+    clickHandle: () => void,
+    dropdown: boolean
+}
+
+const SideBar: React.FC<IProps> = ({clickHandle, dropdown}) => {
     return (
         <div className='side-bar'>
             <div className='user-container'>
-                <User />
+                <User clickHandle={clickHandle} dropdown={dropdown} />
             </div>
             <div className='sidebar-contents'>
-                <Contacts header='CHANNELS' name='#general' />
-                <Contacts header='FRIENDS' name='Friend name' />
+                <Contacts 
+                    header='channels' 
+                    placeholder='Enter channel name'
+                    inputName='name'
+                    channel
+                />
+                <Contacts 
+                    header='friends'
+                    placeholder='Enter user code'
+                    inputName='code'
+                />
             </div>
         </div>
     )
