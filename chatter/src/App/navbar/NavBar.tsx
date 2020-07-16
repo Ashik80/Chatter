@@ -3,13 +3,13 @@ import './NavBar.css'
 import Button from '../button/Button'
 import Logo from './Logo'
 import { Link } from 'react-router-dom'
-import ModalStore from '../../stores/modalStore'
 import {observer} from 'mobx-react-lite'
 import LoginForm from '../loginForm/LoginForm'
+import { RootStoreContext } from '../../stores/rootStore'
 
 const NavBar = () => {
-    const modalStore = useContext(ModalStore)
-    const {openModal} = modalStore
+    const rootStore = useContext(RootStoreContext)
+    const {openModal} = rootStore.modalStore
 
     const clickHandle = () => {
         openModal(<LoginForm />)

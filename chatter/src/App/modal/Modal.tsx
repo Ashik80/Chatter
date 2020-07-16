@@ -1,15 +1,15 @@
 import React, { useContext, SyntheticEvent } from 'react'
 import './Modal.css'
-import ModalStore from '../../stores/modalStore'
 import { observer } from 'mobx-react-lite'
+import { RootStoreContext } from '../../stores/rootStore'
 
 interface IProps {
     isOpen: boolean
 }
 
 const Modal: React.FC<IProps> = ({ isOpen }) => {
-    const modalStore = useContext(ModalStore)
-    const { closeModal, body } = modalStore
+    const rootStore = useContext(RootStoreContext)
+    const { closeModal, body } = rootStore.modalStore
 
     const displayStyle = {
         display: isOpen ? 'block' : 'none'

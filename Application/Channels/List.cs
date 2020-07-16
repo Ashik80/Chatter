@@ -45,8 +45,6 @@ namespace Application.Channels
 
                 var channelDto = mapper.Map<List<Channel>, List<ChannelDto>>(channels);
 
-                channelDto.Reverse();
-
                 return channelDto;
             }
         }

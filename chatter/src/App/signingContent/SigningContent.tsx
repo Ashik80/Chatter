@@ -3,7 +3,7 @@ import Button from '../button/Button'
 import './SigningContent.css'
 import RegisterForm from '../loginForm/RegisterForm'
 import LoginForm from '../loginForm/LoginForm'
-import ModalStore from '../../stores/modalStore'
+import { RootStoreContext } from '../../stores/rootStore'
 
 interface IProps {
     inverted?: boolean,
@@ -20,8 +20,8 @@ const SigningContent: React.FC<IProps> = ({
     buttonText,
     name
 }) => {
-    const modalStore = useContext(ModalStore)
-    const {openModal} = modalStore
+    const rootStore = useContext(RootStoreContext)
+    const {openModal} = rootStore.modalStore
 
     const divStyle = {
         padding: `${inverted ? 49 : 50}px ${inverted ? 34 : 35}px`,

@@ -3,14 +3,13 @@ import { Form, Field } from 'react-final-form'
 import TextInput from '../formComponents/TextInput'
 import './LoginForm.css'
 import SpecialButton from '../loginButtons/SpecialButton'
-import ModalStore from '../../stores/modalStore'
-import UserStore from '../../stores/userStore'
 import RegisterForm from './RegisterForm'
 import { ILoginFromValues } from '../../models/user'
+import { RootStoreContext } from '../../stores/rootStore'
 
 const LoginForm = () => {
-    const userStore = useContext(UserStore)
-    const modalStore = useContext(ModalStore)
+    const rootStore = useContext(RootStoreContext)
+    const {modalStore, userStore} = rootStore
     const {openModal, closeModal} = modalStore
     const {login} = userStore
 

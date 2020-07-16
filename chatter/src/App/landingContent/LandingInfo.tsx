@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
 import './LandingInfo.css'
 import Button from '../button/Button'
-import ModalStore from '../../stores/modalStore'
 import {observer} from 'mobx-react-lite'
 import RegisterForm from '../loginForm/RegisterForm'
+import { RootStoreContext } from '../../stores/rootStore'
 
 const LandingInfo = () => {
-    const modalStore = useContext(ModalStore)
-    const {openModal} = modalStore
+    const rootStore = useContext(RootStoreContext)
+    const {openModal} = rootStore.modalStore
 
     const clickHandle = () => {
         openModal(<RegisterForm />)

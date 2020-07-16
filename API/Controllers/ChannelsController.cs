@@ -44,5 +44,12 @@ namespace API.Controllers
         {
             return await mediator.Send(new List.Query());
         }
+
+        [HttpPost("add/{id}/{userId}")]
+        [Authorize(Policy = "IsAdmin")]
+        public async Task<ActionResult<Unit>> AddUser(Guid id, string userId)
+        {
+            return await mediator.Send(new AddUser.Command(id, userId));
+        }
     }
 }

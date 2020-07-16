@@ -1,7 +1,12 @@
 import {observable, action} from 'mobx'
-import { createContext } from 'react'
+import { RootStore } from './rootStore'
 
-class ModalStore {
+export default class ModalStore {
+    rootStore: RootStore
+    constructor(rootStore: RootStore){
+        this.rootStore = rootStore
+    }
+
     @observable open = false
     @observable body: JSX.Element | null = null
 
@@ -15,5 +20,3 @@ class ModalStore {
         this.body = null
     }
 }
-
-export default createContext(new ModalStore())

@@ -43,8 +43,11 @@ namespace Application.Friends
 
                 var existingFriendReq = await context.FriendRequest
                     .AnyAsync(x => x.Request == currentUser && x.User == user);
+
+                var existingFriendReq2 = await context.FriendRequest
+                    .AnyAsync(x => x.User == currentUser && x.Request == user);
                 
-                if(existingFriendReq)
+                if(existingFriendReq || existingFriendReq2)
                 {
                     throw new RestException(HttpStatusCode.BadRequest, new{request = "Already exists"});
                 }

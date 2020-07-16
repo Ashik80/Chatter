@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Application.Channels
 {
@@ -6,5 +8,6 @@ namespace Application.Channels
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

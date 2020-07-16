@@ -1,6 +1,8 @@
 import axios, { AxiosResponse } from 'axios'
 import { ILoginFromValues, IUser, IRegisterFormValues } from '../../models/user'
 import { IChannel } from '../../models/channel'
+import { IFriend } from '../../models/friend'
+import { IRequest } from '../../models/request'
 
 axios.defaults.baseURL = 'http://localhost:5000/api'
 
@@ -33,4 +35,13 @@ const Channel = {
     delete: (id: string) => request.del(`channels/${id}`)
 }
 
-export default { User, Channel }
+const Friend = {
+    list: (): Promise<IFriend[]> => request.get('friends'),
+    add: (code: string) => request.post('friends', code),
+    listRequest: (predicate: string): Promise<IRequest> => 
+        request.get(`friends/requests?predicate=${predicate}`),
+    accept: (id: string) => request.post(`friends/${id}`, {}),
+    delete: (id: string, predicate: string) => request.del(`friends/${id}?predicate=${predicate}`)
+}
+
+export default { User, Channel, Friend }

@@ -1,0 +1,20 @@
+.request-nav {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    background-color: #282c34;
+    border-radius: 5px;
+    color: white;
+    overflow: hidden;
+}
+
+.request-nav-item {
+    width: 50%;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.active-nav-item {
+    background-color: orange;
+    transition: background-color 300ms;
+}

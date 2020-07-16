@@ -1,0 +1,47 @@
+.friend-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.friend-list {
+    box-sizing: border-box;
+}
+
+.friend-info {
+    display: flex;
+}
+
+.friend-image {
+    height: 40px;
+    width: 40px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.friend-btn-group > button {
+    border: none;
+    margin-left: 5px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.accept-btn {
+    font-size: 20px;
+    color: green;
+}
+
+.delete-btn {
+    font-size: 20px;
+    color: red;
+}
+
+.friend-code {
+    font-size: 14px;
+    color: gray;
+}
+
+.friend-name {
+    font-weight: bold;
+}

@@ -1,6 +1,8 @@
 .dropdown-menu {
     background-color: white;
     padding: 10px;
+    min-width: 100px;
+    text-align: center;
     z-index: 1;
     color: black;
     position: absolute;
@@ -19,6 +21,7 @@
 
 .dropdown-item {
     cursor: pointer;
+    padding: 5px 0;
 }
 
 .dropdown-item:active {

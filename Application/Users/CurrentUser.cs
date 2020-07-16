@@ -30,6 +30,7 @@ namespace Application.Users
 
                 var user = new User
                 {
+                    Id = currentUser.Id,
                     DisplayName = currentUser.DisplayName,
                     UserName = currentUser.UserName,
                     Code = currentUser.Code,

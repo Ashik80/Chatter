@@ -1,21 +1,24 @@
 import { observable, action, runInAction } from "mobx";
-import { createContext } from "react";
 import { IChannel } from "../models/channel";
 import agent from "../App/api/agent";
-import {v4 as uuid} from 'uuid'
+import { RootStore } from "./rootStore";
 
-class ChannelStore {
+export default class ChannelStore {
+    rootStore: RootStore
+    constructor(rootStore: RootStore)
+    {
+        this.rootStore = rootStore
+    }
+
     @observable channels: IChannel[] = []
 
     @action addChannel = async (values: IChannel) => {
-        const channel: IChannel = {
-            id: uuid(),
-            name: `#${values.name}`
-        }
         try{
             await agent.Channel.add(values)
             runInAction(() => {
-                this.channels.push(channel)
+                values.name = '#' + values.name
+                values.isAdmin = true
+                this.channels.push(values)
             })
         } catch (error) {
             console.log(error)
@@ -44,5 +47,3 @@ class ChannelStore {
         }
     }
 }
-
-export default createContext(new ChannelStore())

@@ -4,18 +4,15 @@ import LandingPage from './main/LandingPage'
 import GetStarted from './main/GetStarted'
 import { Route } from 'react-router-dom'
 import Modal from './modal/Modal'
-import ModalStore from '../stores/modalStore'
 import { observer } from 'mobx-react-lite'
 import 'mobx-react-lite/batchingForReactDom'
-import UserStore from '../stores/userStore'
 import { history } from '..'
+import { RootStoreContext } from '../stores/rootStore'
 
 const App = () => {
-    const modalStore = useContext(ModalStore)
-    const {open} = modalStore
-
-    const userStore = useContext(UserStore)
-    const {currentUser, getToken} = userStore
+    const rootStore = useContext(RootStoreContext)
+    const {currentUser, getToken} = rootStore.userStore
+    const {open} = rootStore.modalStore
 
     useEffect(() => {
         if(getToken) currentUser().finally(() => history.push('/messenger'))

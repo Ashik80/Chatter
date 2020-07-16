@@ -14,9 +14,11 @@ const ChannelList: React.FC<IProps> = ({ contacts, deleteChannel }) => {
             {contacts.map(contact =>
                 <div key={contact.id} className='channel-list'>
                     <div className='channel-name'>{contact.name}</div>
-                    <button onClick={() => deleteChannel(contact.id)}>
-                        <i className='fas fa-times' />
-                    </button>
+                    {contact.isAdmin &&
+                        <button onClick={() => deleteChannel(contact.id)}>
+                            <i className='fas fa-times' />
+                        </button>
+                    }
                 </div>
             )}
         </div>

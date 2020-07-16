@@ -25,7 +25,7 @@ namespace API.Controllers
         [HttpDelete("requests/{id}")]
         public async Task<ActionResult<Unit>> RemoveRequest(string id, string predicate)
         {
-            return await mediator.Send(new RemoveRequest.Command{Id = id, Predicate = predicate});
+            return await mediator.Send(new RemoveRequest.Command(id, predicate));
         }
 
         [HttpGet("requests")]
@@ -37,7 +37,7 @@ namespace API.Controllers
         [HttpPost("{id}")]
         public async Task<ActionResult<Unit>> Accept(string id)
         {
-            return await mediator.Send(new Accept.Command{Id = id});
+            return await mediator.Send(new Accept.Command { Id = id });
         }
 
         [HttpGet]
@@ -49,7 +49,7 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Unit>> Delete(string id)
         {
-            return await mediator.Send(new Delete.Command{Id = id});
+            return await mediator.Send(new Delete.Command { Id = id });
         }
     }
 }

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import './User.css'
-import UserStore from '../../../stores/userStore'
 import { observer } from 'mobx-react-lite'
 import DropdownMenu from './DropdownMenu'
+import { RootStoreContext } from '../../../stores/rootStore'
 
 interface IProps {
     clickHandle: () => void,
@@ -10,9 +10,8 @@ interface IProps {
 }
 
 const User: React.FC<IProps> = ({clickHandle, dropdown}) => {
-    const userStore = useContext(UserStore)
-    const { user, logout } = userStore
-
+    const rootStore = useContext(RootStoreContext)
+    const { user, logout } = rootStore.userStore
 
     return (
         <div className='user-wrap'>
@@ -30,7 +29,7 @@ const User: React.FC<IProps> = ({clickHandle, dropdown}) => {
                 <button className='logout-btn' onClick={clickHandle}>
                     <i className='fas fa-sort-down' />
                 </button>
-                {dropdown && <DropdownMenu logout={logout} />}
+                {dropdown && <DropdownMenu logout={logout} clickHandle={clickHandle} />}
             </div>
         </div>
     )

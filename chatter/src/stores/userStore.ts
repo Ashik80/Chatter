@@ -1,12 +1,17 @@
-import { createContext } from "react";
 import { observable, action, runInAction, configure, computed } from "mobx";
 import { IUser, ILoginFromValues, IRegisterFormValues } from "../models/user";
 import agent from "../App/api/agent";
 import { history } from "..";
+import { RootStore } from "./rootStore";
 
 configure({ enforceActions: 'always' })
 
-class UserStore {
+export default class UserStore {
+    rootStore: RootStore
+    constructor(rootStore: RootStore){
+        this.rootStore = rootStore
+    }
+
     @observable user: IUser | null = null
     @observable loading = false
 
@@ -72,5 +77,3 @@ class UserStore {
         history.push('/')
     }
 }
-
-export default createContext(new UserStore())

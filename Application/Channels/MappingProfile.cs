@@ -8,7 +8,9 @@ namespace Application.Channels
     {
         public MappingProfile()
         {
-            CreateMap<Channel, ChannelDto>();
+            CreateMap<Channel, ChannelDto>()
+                .ForMember(x => x.IsAdmin, o => o.MapFrom(s => 
+                    s.ChannelUsers.FirstOrDefault(x => x.isAdmin).isAdmin));
         }
     }
 }

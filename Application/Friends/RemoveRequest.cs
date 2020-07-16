@@ -16,6 +16,11 @@ namespace Application.Friends
     {
         public class Command : IRequest
         {
+            public Command(string id, string predicate)
+            {
+                this.Id = id;
+                this.Predicate = Predicate;
+            }
             public string Id { get; set; }
             public string Predicate { get; set; }
         }
@@ -35,20 +40,18 @@ namespace Application.Friends
                 var currentUser = await context.Users
                     .FirstOrDefaultAsync(x => x.UserName == userAccessor.GetCurrentUsername());
 
-                FriendRequest friendRequest = null;
+                var friendRequest = new FriendRequest();
 
                 switch (request.Predicate)
                 {
                     case "sent":
                         friendRequest = await context.FriendRequest
-                            .Where(x => x.Request == currentUser && x.UserId == request.Id)
-                            .FirstOrDefaultAsync();
+                            .FirstOrDefaultAsync(x => x.RequestId == currentUser.Id && x.UserId == request.Id);
                         break;
 
                     case "received":
                         friendRequest = await context.FriendRequest
-                            .Where(x => x.RequestId == request.Id && x.User == currentUser)
-                            .FirstOrDefaultAsync();
+                            .FirstOrDefaultAsync(x => x.RequestId == request.Id && x.User == currentUser);
                         break;
                 }
 

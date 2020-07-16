@@ -33,7 +33,8 @@ namespace Persistence
                 x.HasKey(x => new {x.UserId, x.RequestId});
 
                 x.HasOne(x => x.User)
-                    .WithMany(x => x.FriendRequests);
+                    .WithMany(x => x.FriendRequests)
+                    .HasForeignKey(x => x.UserId);
             });
         }
     }
