@@ -9,8 +9,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200713082303_FriendsAdded")]
-    partial class FriendsAdded
+    [Migration("20200717114918_NewMigration")]
+    partial class NewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -125,15 +125,21 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.FriendRequest", b =>
                 {
-                    b.Property<string>("UserId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RequestId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("UserId", "RequestId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("RequestId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("FriendRequest");
                 });
@@ -299,16 +305,12 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.FriendRequest", b =>
                 {
                     b.HasOne("Domain.AppUser", "Request")
-                        .WithMany()
-                        .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("SentRequests")
+                        .HasForeignKey("RequestId");
 
                     b.HasOne("Domain.AppUser", "User")
-                        .WithMany("FriendRequests")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("ReceivedRequests")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Domain.Friends", b =>

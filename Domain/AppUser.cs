@@ -10,6 +10,7 @@ namespace Domain
         public string Code { get; set; }
         public ICollection<ChannelUser> ChannelUsers { get; set; }
         public ICollection<Friends> Friends { get; set; }
-        public ICollection<FriendRequest> FriendRequests { get; set; }
+        public ICollection<FriendRequest> SentRequests { get; set; }
+        public ICollection<FriendRequest> ReceivedRequests { get; set; }
     }
 }

@@ -30,11 +30,13 @@ namespace Persistence
             });
 
             builder.Entity<FriendRequest>(x => {
-                x.HasKey(x => new {x.UserId, x.RequestId});
-
                 x.HasOne(x => x.User)
-                    .WithMany(x => x.FriendRequests)
+                    .WithMany(x => x.ReceivedRequests)
                     .HasForeignKey(x => x.UserId);
+
+                x.HasOne(x => x.Request)
+                    .WithMany(x => x.SentRequests)
+                    .HasForeignKey(x => x.RequestId);
             });
         }
     }

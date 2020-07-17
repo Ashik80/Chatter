@@ -44,8 +44,8 @@ namespace Application.Friends
                     throw new RestException(HttpStatusCode.NotFound, new{friend = "Not found"});
                 }
 
-                context.Remove(friend);
-                context.Remove(friend2);
+                context.Friends.Remove(friend);
+                context.Friends.Remove(friend2);
 
                 var success = await context.SaveChangesAsync() > 0;
 

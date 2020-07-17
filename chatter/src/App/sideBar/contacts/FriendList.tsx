@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { IFriend } from '../../../models/friend'
 import { observer } from 'mobx-react-lite'
 import './FriendList.css'
+import ActionButton from '../../actionForms/ActionButton'
+import { RootStoreContext } from '../../../stores/rootStore'
+import ActionForm from '../../actionForms/ActionForm'
+import FriendsInfo from '../../friends/FriendsInfo'
+import SelectChannels from '../../actionForms/channels/SelectChannels'
 
 interface IProps {
     friends: IFriend[] | undefined,
@@ -12,31 +17,56 @@ interface IProps {
 }
 
 const FriendList: React.FC<IProps> = ({ friends, accept, deleted, predicate, request }) => {
+    const rootStore = useContext(RootStoreContext)
+    const { openModal, closeModal } = rootStore.modalStore
+    const { unfriend } = rootStore.friendStore
+
+    const unfriendHandler = (friend: IFriend) => {
+        openModal(<ActionForm
+            header='Are you sure you want to unfriend this user?'
+            content={<FriendsInfo friend={friend} />}
+            clickHandle={() => unfriend(friend.id).then(() => closeModal())}
+            buttonText='Unfriend'
+        />)
+    }
+
+    const addToChannelHandler = (id: string) => {
+        openModal(<SelectChannels userId={id} />)
+    }
+
     return (
         <div className='friend-list'>
             {friends?.map(friend =>
                 <div key={friend.id} className='friend-list-item'>
-                    <div className='friend-info'>
-                        <div className='friend-image' />
+                    <FriendsInfo friend={friend} />
+                    {request ? (
                         <div>
-                            <div className='friend-name'>{friend.displayName}</div>
-                            <div className='friend-code'>{friend.code}</div>
-                        </div>
-                    </div>
-                    {request && <div className='friend-btn-group'>
-                        <button>
-                            <i 
-                                className='fas fa-check accept-btn' 
-                                onClick={() => accept!(friend)}
+                            {predicate === 'received' &&
+                                <ActionButton
+                                    clickHandle={() => accept!(friend)}
+                                    content={<i className='fas fa-check' />}
+                                    style={{ color: 'green' }}
+                                />}
+                            <ActionButton
+                                clickHandle={() => deleted!(friend.id, predicate!)}
+                                style={{ marginLeft: 5, color: 'red' }}
+                                content={<i className='fas fa-times' />}
                             />
-                        </button>
-                        <button>
-                            <i 
-                                className='fas fa-times delete-btn' 
-                                onClick={() => deleted!(friend.id, predicate!)} 
-                            />
-                        </button>
-                    </div>}
+                        </div>) :
+                        (
+                            <div>
+                                <ActionButton
+                                    clickHandle={() => addToChannelHandler(friend.id)}
+                                    content={<i className='fas fa-plus' />}
+                                    style={{ color: 'white' }}
+                                />
+                                <ActionButton
+                                    clickHandle={() => unfriendHandler(friend)}
+                                    content={<i className='fas fa-times' />}
+                                    style={{ color: 'red' }}
+                                />
+                            </div>
+                        )}
                 </div>
             )}
         </div>

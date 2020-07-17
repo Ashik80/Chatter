@@ -1,0 +1,19 @@
+.action-submit {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffcf76;
+    color: #282c34;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 300ms;
+}
+
+.action-submit:hover {
+    background-color: orange;
+    transition: background-color 300ms;
+}
+
+.action-submit:focus {
+    outline: none;
+}

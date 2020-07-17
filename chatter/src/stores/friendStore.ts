@@ -58,12 +58,27 @@ export default class FriendStore {
 
     @action deleteRequest = async (id: string, predicate: string) => {
         try {
-            console.log(id, predicate)
             await agent.Friend.delete(id, predicate)
             runInAction(() => {
                 this.friends = this.friends.filter(friend => friend.id !== id)
+                if(predicate === 'sent'){
+                    this.requests!.sentRequests = this.requests!.sentRequests.filter(req => req.id !== id)
+                } else if (predicate === 'received') {
+                    this.requests!.receivedRequests = this.requests!.receivedRequests.filter(r => r.id !== id)
+                }
             })
         } catch(error) {
+            console.log(error)
+        }
+    }
+
+    @action unfriend = async (id: string) =>  {
+        try{
+            await agent.Friend.unfriend(id)
+            runInAction(() => {
+                this.friends = this.friends.filter(friend => friend.id !== id)
+            })
+        } catch (error) {
             console.log(error)
         }
     }

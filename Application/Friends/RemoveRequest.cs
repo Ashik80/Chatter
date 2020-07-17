@@ -40,20 +40,22 @@ namespace Application.Friends
                 var currentUser = await context.Users
                     .FirstOrDefaultAsync(x => x.UserName == userAccessor.GetCurrentUsername());
 
-                var friendRequest = new FriendRequest();
+                var queryAble = context.FriendRequest.AsQueryable();
 
                 switch (request.Predicate)
                 {
                     case "sent":
-                        friendRequest = await context.FriendRequest
-                            .FirstOrDefaultAsync(x => x.RequestId == currentUser.Id && x.UserId == request.Id);
+                        queryAble = context.FriendRequest
+                            .Where(x => x.RequestId == currentUser.Id && x.UserId == request.Id);
                         break;
 
                     case "received":
-                        friendRequest = await context.FriendRequest
-                            .FirstOrDefaultAsync(x => x.RequestId == request.Id && x.User == currentUser);
+                        queryAble = context.FriendRequest
+                            .Where(x => x.RequestId == request.Id && x.User == currentUser);
                         break;
                 }
+
+                var friendRequest = await queryAble.FirstOrDefaultAsync();
 
                 if (friendRequest == null)
                 {

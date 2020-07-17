@@ -123,15 +123,21 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.FriendRequest", b =>
                 {
-                    b.Property<string>("UserId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RequestId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("UserId", "RequestId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("RequestId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("FriendRequest");
                 });
@@ -297,16 +303,12 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.FriendRequest", b =>
                 {
                     b.HasOne("Domain.AppUser", "Request")
-                        .WithMany()
-                        .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("SentRequests")
+                        .HasForeignKey("RequestId");
 
                     b.HasOne("Domain.AppUser", "User")
-                        .WithMany("FriendRequests")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("ReceivedRequests")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Domain.Friends", b =>

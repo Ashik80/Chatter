@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class NewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -168,11 +168,61 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FriendRequest",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    RequestId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FriendRequest", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FriendRequest_AspNetUsers_RequestId",
+                        column: x => x.RequestId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FriendRequest_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Friends",
+                columns: table => new
+                {
+                    AppUserId = table.Column<string>(nullable: false),
+                    FriendId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Friends", x => new { x.AppUserId, x.FriendId });
+                    table.ForeignKey(
+                        name: "FK_Friends_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Friends_AspNetUsers_FriendId",
+                        column: x => x.FriendId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ChannelUser",
                 columns: table => new
                 {
                     AppUserId = table.Column<string>(nullable: false),
-                    ChannelId = table.Column<Guid>(nullable: false)
+                    ChannelId = table.Column<Guid>(nullable: false),
+                    isAdmin = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -232,6 +282,21 @@ namespace Persistence.Migrations
                 name: "IX_ChannelUser_ChannelId",
                 table: "ChannelUser",
                 column: "ChannelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FriendRequest_RequestId",
+                table: "FriendRequest",
+                column: "RequestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FriendRequest_UserId",
+                table: "FriendRequest",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Friends_FriendId",
+                table: "Friends",
+                column: "FriendId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -255,13 +320,19 @@ namespace Persistence.Migrations
                 name: "ChannelUser");
 
             migrationBuilder.DropTable(
+                name: "FriendRequest");
+
+            migrationBuilder.DropTable(
+                name: "Friends");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Channel");
 
             migrationBuilder.DropTable(
-                name: "Channel");
+                name: "AspNetUsers");
         }
     }
 }

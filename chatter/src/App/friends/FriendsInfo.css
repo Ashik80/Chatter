@@ -1,0 +1,19 @@
+.friend-info {
+    display: flex;
+}
+
+.friend-image {
+    height: 40px;
+    width: 40px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.friend-code {
+    font-size: 14px;
+    color: gray;
+}
+
+.friend-name {
+    font-weight: bold;
+}

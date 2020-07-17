@@ -3,17 +3,9 @@ import './Modal.css'
 import { observer } from 'mobx-react-lite'
 import { RootStoreContext } from '../../stores/rootStore'
 
-interface IProps {
-    isOpen: boolean
-}
-
-const Modal: React.FC<IProps> = ({ isOpen }) => {
+const Modal = () => {
     const rootStore = useContext(RootStoreContext)
     const { closeModal, body } = rootStore.modalStore
-
-    const displayStyle = {
-        display: isOpen ? 'block' : 'none'
-    }
 
     const anywhereClick = (e: SyntheticEvent<HTMLDivElement>) => {
         const { id } = e.currentTarget
@@ -23,7 +15,7 @@ const Modal: React.FC<IProps> = ({ isOpen }) => {
     }
 
     return (
-        <div className='modal' id='modal' style={displayStyle} onClick={anywhereClick}>
+        <div className='modal' id='modal' onClick={anywhereClick}>
             <div className='modal-content' onClick={e => e.stopPropagation()}>
                 <span className='close' onClick={closeModal}>
                     &times;

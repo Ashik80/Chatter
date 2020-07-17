@@ -20,7 +20,7 @@ const App = () => {
 
     return (
         <div className='app'>
-            <Modal isOpen={open} />
+            {open && <Modal />}
             <Route exact path='/' component={LandingPage} />
             <Route path='/get-started' component={GetStarted} />
             <Route path='/messenger' component={Messenger} />

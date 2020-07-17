@@ -54,3 +54,12 @@
 .dropdown {
     position: relative;
 }
+
+.notification {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: red;
+    position: absolute;
+    right: 0;
+}

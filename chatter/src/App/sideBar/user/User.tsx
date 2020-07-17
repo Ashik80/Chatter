@@ -1,8 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import './User.css'
 import { observer } from 'mobx-react-lite'
 import DropdownMenu from './DropdownMenu'
 import { RootStoreContext } from '../../../stores/rootStore'
+import FriendsInfo from '../../friends/FriendsInfo'
 
 interface IProps {
     clickHandle: () => void,
@@ -12,24 +13,26 @@ interface IProps {
 const User: React.FC<IProps> = ({clickHandle, dropdown}) => {
     const rootStore = useContext(RootStoreContext)
     const { user, logout } = rootStore.userStore
+    const {requests, listRequests} = rootStore.friendStore
+
+    useEffect(() => {
+        listRequests('received')
+    }, [listRequests])
 
     return (
         <div className='user-wrap'>
             <div className='user'>
-                <div className='user-img' />
-                <div>
-                    <div className='user-name'>
-                        {user?.displayName}
-                    </div>
-                    <div className='user-code'>{user?.code}</div>
-                </div>
+                <FriendsInfo friend={user} style={{borderRadius: '50%', backgroundColor: 'white'}} />
                 <div className='user-status' />
             </div>
             <div className='dropdown' onClick={e => e.stopPropagation()}>
+                {requests !== null && requests.receivedRequests !== null &&
+                    requests.receivedRequests.length > 0 && 
+                    <div className='notification' />}
                 <button className='logout-btn' onClick={clickHandle}>
                     <i className='fas fa-sort-down' />
                 </button>
-                {dropdown && <DropdownMenu logout={logout} clickHandle={clickHandle} />}
+                {dropdown && <DropdownMenu requests={requests} logout={logout} clickHandle={clickHandle} />}
             </div>
         </div>
     )
