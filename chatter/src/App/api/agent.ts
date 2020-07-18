@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { ILoginFromValues, IUser, IRegisterFormValues } from '../../models/user'
-import { IChannel } from '../../models/channel'
+import { IChannel, IChannelFormValues } from '../../models/channel'
 import { IFriend } from '../../models/friend'
 import { IRequest } from '../../models/request'
 
@@ -32,7 +32,9 @@ const User = {
 const Channel = {
     list: (): Promise<IChannel[]> => request.get('channels'),
     add: (values: IChannel) => request.post('channels', values),
-    delete: (id: string) => request.del(`channels/${id}`)
+    delete: (id: string) => request.del(`channels/${id}`),
+    edit: (id: string, value: IChannelFormValues) => request.put(`channels/${id}`, value),
+    addUser: (id: string, userId: string) => request.post(`channels/add/${id}/${userId}`, {})
 }
 
 const Friend = {

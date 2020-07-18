@@ -8,5 +8,6 @@ namespace Domain
         public Guid Id { get; set; }
         public string Name { get; set; }
         public ICollection<ChannelUser> ChannelUsers { get; set; }
+        public ICollection<ChannelMessage> ChannelMessages { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Errors;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Channels
@@ -41,6 +42,20 @@ namespace Application.Channels
                 }
 
                 var channel = await context.Channel.FindAsync(request.ChannelId);
+
+                if (channel == null)
+                {
+                    throw new RestException(HttpStatusCode.NotFound, new { channel = "Not found" });
+                }
+
+                var existing = await context.ChannelUser
+                    .FirstOrDefaultAsync(x => x.AppUser == user && x.Channel == channel);
+
+                if (existing != null)
+                {
+                    throw new RestException(HttpStatusCode.BadRequest,
+                        new{user = "Already exists in this channel"});
+                }
 
                 var channelUser = new ChannelUser
                 {

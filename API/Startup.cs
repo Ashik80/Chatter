@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using API.Middleware;
+using API.SignalR;
 using Application.Friends;
 using Application.Interfaces;
 using Application.Users;
@@ -41,42 +42,69 @@ namespace API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(opt => {
+            services.AddControllers(opt =>
+            {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 opt.Filters.Add(new AuthorizeFilter(policy));
-            }).AddFluentValidation(opt => {
+            }).AddFluentValidation(opt =>
+            {
                 opt.RegisterValidatorsFromAssemblyContaining<Login>();
             });
 
-            services.AddAuthorization(opt => {
-                opt.AddPolicy("IsAdmin", policy => {
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("IsAdmin", policy =>
+                {
                     policy.Requirements.Add(new IsAdminRequirement());
+                });
+                opt.AddPolicy("IsMember", policy =>
+                {
+                    policy.Requirements.Add(new IsMemberRequirement());
                 });
             });
 
             services.AddTransient<IAuthorizationHandler, IsAdminRequirementHandler>();
 
-            services.AddDbContext<DataContext>(opt => 
+            services.AddTransient<IAuthorizationHandler, IsMemberRequirementHandler>();
+
+            services.AddDbContext<DataContext>(opt =>
                 opt.UseSqlite(Configuration.GetConnectionString("chattercontext")));
 
             services.AddMediatR(typeof(Login.Handler).Assembly);
 
             services.AddAutoMapper(typeof(ListRequest.Query));
 
-            var builder = services.AddIdentityCore<AppUser>(opt => {
+            var builder = services.AddIdentityCore<AppUser>(opt =>
+            {
                 opt.Password.RequireNonAlphanumeric = false;
             });
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
             identityBuilder.AddEntityFrameworkStores<DataContext>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            {
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = false,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key")),
                     ValidateAudience = false
+                };
+                opt.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        var path = context.HttpContext.Request.Path;
+
+                        if(!string.IsNullOrWhiteSpace(accessToken) &&
+                            path.StartsWithSegments("/chat"))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
@@ -86,12 +114,16 @@ namespace API
 
             services.AddScoped<IUserAccessor, UserAccessor>();
 
-            services.AddCors(opt => {
-                opt.AddPolicy("CorsPolicy", policy => {
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
                     policy.WithOrigins("http://localhost:3000")
                         .AllowAnyHeader().AllowAnyMethod();
                 });
             });
+
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -116,6 +148,7 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }

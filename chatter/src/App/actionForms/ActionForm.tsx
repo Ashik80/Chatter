@@ -7,7 +7,8 @@ const ActionForm = (props: any) => {
         <div className='action-form'>
             <div className='action-header'>{props.header}</div>
             <div className='action-content'>{props.content}</div>
-            <ActionSubmit clickHandle={props.clickHandle} buttonText={props.buttonText} />
+            {!props.hideButton &&
+            <ActionSubmit clickHandle={props.clickHandle} buttonText={props.buttonText} />}
         </div>
     )
 }

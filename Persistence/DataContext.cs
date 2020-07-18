@@ -15,6 +15,8 @@ namespace Persistence
         public DbSet<ChannelUser> ChannelUser { get; set; }
         public DbSet<Friends> Friends { get; set; }
         public DbSet<FriendRequest> FriendRequest { get; set; }
+        public DbSet<ChannelMessage> ChannelMessage { get; set; }
+        public DbSet<FriendMessage> FriendMessage { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -37,6 +39,16 @@ namespace Persistence
                 x.HasOne(x => x.Request)
                     .WithMany(x => x.SentRequests)
                     .HasForeignKey(x => x.RequestId);
+            });
+
+            builder.Entity<FriendMessage>(x => {
+                x.HasOne(x => x.Sender)
+                    .WithMany(x => x.SentMessages)
+                    .HasForeignKey(x => x.SenderId);
+
+                x.HasOne(x => x.Receiver)
+                    .WithMany(x => x.ReceivedMessages)
+                    .HasForeignKey(x => x.ReceiverId);
             });
         }
     }

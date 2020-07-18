@@ -31,7 +31,11 @@ const FriendList: React.FC<IProps> = ({ friends, accept, deleted, predicate, req
     }
 
     const addToChannelHandler = (id: string) => {
-        openModal(<SelectChannels userId={id} />)
+        openModal(<ActionForm
+            header='Add user to channel'
+            content={<SelectChannels userId={id} />}
+            hideButton={true}
+        />)
     }
 
     return (

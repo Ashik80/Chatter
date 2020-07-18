@@ -12,5 +12,8 @@ namespace Domain
         public ICollection<Friends> Friends { get; set; }
         public ICollection<FriendRequest> SentRequests { get; set; }
         public ICollection<FriendRequest> ReceivedRequests { get; set; }
+        public ICollection<ChannelMessage> ChannelMessages { get; set; }
+        public ICollection<FriendMessage> SentMessages { get; set; }
+        public ICollection<FriendMessage> ReceivedMessages { get; set; }
     }
 }

@@ -3,3 +3,7 @@ export interface IChannel {
     name: string,
     isAdmin: boolean
 }
+
+export interface IChannelFormValues {
+    name: string
+}

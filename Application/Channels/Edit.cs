@@ -33,7 +33,7 @@ namespace Application.Channels
                     throw new RestException(HttpStatusCode.NotFound, new { channel = "Not found" });
                 }
 
-                channel.Name = request.Name ?? channel.Name;
+                channel.Name = ("#" + request.Name) ?? channel.Name;
 
                 var success = await _context.SaveChangesAsync() > 0;
 
