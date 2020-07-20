@@ -33,7 +33,7 @@ namespace Infrastructure.Security
             var currentUser = _context.Users.FirstOrDefault(x => x.UserName == currentUsername);
 
             var channelId = Guid.Parse(accessor.HttpContext.Request.RouteValues
-                .FirstOrDefault(x => x.Key == "id").ToString());
+                .FirstOrDefault(x => x.Key == "id").Value.ToString());
 
             var channelUser = _context.ChannelUser
                 .FirstOrDefault(x => x.AppUser == currentUser && x.ChannelId == channelId);

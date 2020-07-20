@@ -10,6 +10,7 @@ export default class ChannelStore {
     }
 
     @observable channels: IChannel[] = []
+    @observable channel: IChannel | null = null
 
     @action addChannel = async (values: IChannel) => {
         try {
@@ -67,6 +68,17 @@ export default class ChannelStore {
     @action addUser = async (id: string, userId: string) => {
         try {
             await agent.Channel.addUser(id, userId)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    @action channelDetails = async (id: string) => {
+        try {
+            const channel = await agent.Channel.details(id)
+            runInAction(() => {
+                this.channel = channel
+            })
         } catch (error) {
             console.log(error)
         }

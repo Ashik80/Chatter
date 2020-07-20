@@ -1,0 +1,14 @@
+.unselected {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #aeb4c1;
+}
+
+.unselected-content {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: #282c34;
+}

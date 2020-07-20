@@ -8,6 +8,8 @@ import { observer } from 'mobx-react-lite'
 import FriendList from './FriendList'
 import {v4 as uuid} from 'uuid'
 import { RootStoreContext } from '../../../stores/rootStore'
+import { submitFormHandler } from './submitHandler'
+import ContactHeader from './ContactHeader'
 
 interface IProps {
     header: string,
@@ -26,6 +28,7 @@ const Contacts: React.FC<IProps> = ({ header, placeholder, inputName, channel })
     const [active, setActive] = useState(false)
     const [inputMode, setInputMode] = useState(false)
     const [sentMode, setSentMode] = useState(false)
+    const [selected, setSelected] = useState('')
 
     const visibilityHandler = () => {
         channel ? setChannelVisibility(!channelVisibility) : setFriendVisibility(!friendVisibility)
@@ -45,35 +48,14 @@ const Contacts: React.FC<IProps> = ({ header, placeholder, inputName, channel })
     }
 
     const submitHandler = (values: any) => {
-        if(header === 'channels'){
-            const channel: IChannel = {
-                ...values,
-                id: uuid()
-            }
-            addChannel(channel).then(() => {
-                setInputMode(false)
-                setChannelVisibility(true)
-                setActive(true)
-            })
-        } else if (header === 'friends'){
-            addFriend(values).then(() => {
-                setInputMode(false)
-                setSentMode(true)
-            })
-        }
+        submitFormHandler(values, header, addChannel, setInputMode,
+        setChannelVisibility, setActive, addFriend, setSentMode)
     }
 
     return (
         <div className='contacts'>
-            <div className='contact-header'>
-                <div onClick={visibilityHandler}>
-                    <i className={`fas fa-chevron-right ${active && 'active-icon'}`} />
-                    {header}
-                </div>
-                <button className='add-contact-btn' onClick={inputModeHandler}>
-                    <i className={`fas fa-plus ${inputMode && 'cancel-btn'}`} />
-                </button>
-            </div>
+            <ContactHeader visibilityHandler={visibilityHandler} header={header}
+                active={active} inputMode={inputMode} inputModeHandler={inputModeHandler}/>
             {inputMode && <Form 
                 onSubmit={submitHandler}
                 render={({handleSubmit}) => (
@@ -84,9 +66,11 @@ const Contacts: React.FC<IProps> = ({ header, placeholder, inputName, channel })
             />}
             {sentMode && !channel && <div>Sent</div>}
             {channel && channelVisibility && 
-                <ChannelList contacts={channels} deleteChannel={deleteChannel} />
+                <ChannelList selected={selected} setSelected={setSelected}
+                    contacts={channels} deleteChannel={deleteChannel} />
             }
-            {!channel && friendVisibility && <FriendList friends={friends} />}
+            {!channel && friendVisibility && 
+                <FriendList friends={friends} selected={selected} setSelected={setSelected} />}
         </div>
     )
 }

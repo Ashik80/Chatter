@@ -26,7 +26,7 @@ namespace Infrastructure.Security
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
             IsAdminRequirement requirement)
         {
-            var userName = accessor.HttpContext.User?.Claims?
+            var userName = context.User?.Claims?
                 .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
             var channelId = Guid.Parse(accessor.HttpContext.Request.RouteValues

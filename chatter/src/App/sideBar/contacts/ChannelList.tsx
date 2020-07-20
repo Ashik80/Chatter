@@ -9,16 +9,19 @@ import { RootStoreContext } from '../../../stores/rootStore'
 
 interface IProps {
     contacts: IChannel[],
-    deleteChannel: (id: string) => Promise<void>
+    deleteChannel: (id: string) => Promise<void>,
+    selected: string,
+    setSelected: (value: React.SetStateAction<string>) => void
 }
 
-const ChannelList: React.FC<IProps> = ({ contacts, deleteChannel }) => {
+const ChannelList: React.FC<IProps> = ({ contacts, deleteChannel, selected, setSelected }) => {
     const rootStore = useContext(RootStoreContext)
-    const { editChannel } = rootStore.channelStore
+    const { editChannel, channelDetails } = rootStore.channelStore
 
     const [editMode, setEditMode] = useState({ id: '', name: '' })
 
     const handleEditMode = (e: SyntheticEvent<HTMLButtonElement>) => {
+        e.stopPropagation()
         const { id, name } = e.currentTarget
         setEditMode({
             id: id,
@@ -30,7 +33,9 @@ const ChannelList: React.FC<IProps> = ({ contacts, deleteChannel }) => {
         <div style={{marginTop: 10}}>
             {contacts.map(contact =>
                 <div key={contact.id}>
-                    <div className='channel-list'>
+                    <div className={`channel-list ${selected === contact.id && 'selected-channel'}`} 
+                        onClick={() => channelDetails(contact.id).then(() => setSelected(contact.id))}
+                    >
                         <div className='channel-name'>{contact.name}</div>
                         {contact.isAdmin &&
                             <div>
@@ -44,7 +49,10 @@ const ChannelList: React.FC<IProps> = ({ contacts, deleteChannel }) => {
                                             clickHandle={handleEditMode}
                                         />
                                         <ActionButton
-                                            clickHandle={() => deleteChannel(contact.id)}
+                                            clickHandle={(e: any) => {
+                                                e.stopPropagation()
+                                                deleteChannel(contact.id)
+                                            }}
                                             content={<i className='fas fa-trash' />}
                                             style={{ color: 'orangered' }}
                                         />
@@ -52,7 +60,10 @@ const ChannelList: React.FC<IProps> = ({ contacts, deleteChannel }) => {
                                     : <ActionButton
                                         content={<i className='fas fa-times' />}
                                         style={{color: 'white'}}
-                                        clickHandle={() => setEditMode({id: '', name: ''})}
+                                        clickHandle={(e: any) => {
+                                            e.stopPropagation()
+                                            setEditMode({id: '', name: ''})
+                                        }}
                                     />
                                 }
                             </div>
@@ -72,6 +83,7 @@ const ChannelList: React.FC<IProps> = ({ contacts, deleteChannel }) => {
                                             name='id'
                                             component={TextInput}
                                             type='hidden'
+                                            contact
                                         />
                                         <Field
                                             name='name'

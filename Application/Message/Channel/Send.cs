@@ -44,6 +44,14 @@ namespace Application.Message.Channel
                 var user = await context.Users
                     .FirstOrDefaultAsync(x => x.UserName == userAccessor.GetCurrentUsername());
 
+                var isMember = await context.ChannelUser
+                    .AnyAsync(x => x.Channel == channel && x.AppUser == user);
+
+                if(!isMember)
+                {
+                    throw new RestException(HttpStatusCode.Forbidden, new{user = "Not a member"});
+                }
+
                 var channelMessage = new ChannelMessage
                 {
                     Text = request.Text,

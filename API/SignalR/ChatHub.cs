@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Application.Message.Channel;
 using MediatR;
@@ -14,12 +15,21 @@ namespace API.SignalR
             this.mediator = mediator;
         }
 
-        [Authorize(Policy = "IsMember")]
         public async Task SendMessageToChannel(Send.Command command)
         {
             var message = await mediator.Send(command);
 
-            await Clients.All.SendAsync("ReceiveMessageInChannel", message);
+            await Clients.Group(command.Id.ToString()).SendAsync("ReceiveMessageInChannel", message);
+        }
+
+        public async Task AddToChannel(string id)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, id);
+        }
+
+        public async Task RemoveFromChannel(string id)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, id);
         }
     }
 }

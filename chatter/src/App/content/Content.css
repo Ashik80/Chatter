@@ -10,7 +10,7 @@
     border: 0px solid white;
     padding-left: 10px;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    overflow: hidden;
+    flex-direction: column-reverse;
+    /* justify-content: column; */
+    overflow-y: scroll;
 }

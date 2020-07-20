@@ -1,22 +1,28 @@
-import React, { useState, SyntheticEvent } from 'react'
-import './MessageField.css'
+import React from 'react'
+import { Form, Field } from 'react-final-form'
+import TextInput from '../formComponents/TextInput'
 
-const MessageField = () => {
-    const [message, setMessage] = useState('')
-
-    const handleChange = (e: SyntheticEvent<HTMLInputElement>) => {
-        const {value} = e.currentTarget
-        setMessage(value)
-    }
-
+const MessageField = (props: any) => {
     return (
-        <div className='message-field'>
-            <input 
-                className='message-input' 
-                name='message'  
-                placeholder='Message #general'
-                value={message}
-                onChange={handleChange}
+        <div>
+            <Form
+                onSubmit={props.sendMessage}
+                render={({handleSubmit, form}) => (
+                    <form 
+                        onSubmit={(e) => {
+                            e.preventDefault()
+                            handleSubmit()?.then(() => form.reset())
+                        }} 
+                        style={{height: '100%'}}
+                    >
+                        <Field
+                            name='text'
+                            component={TextInput}
+                            message
+                            placeholder={`Message ${props.name}`}
+                        />
+                    </form>
+                )}
             />
         </div>
     )

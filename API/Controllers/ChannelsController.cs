@@ -51,5 +51,12 @@ namespace API.Controllers
         {
             return await mediator.Send(new AddUser.Command(id, userId));
         }
+
+        [HttpGet("{id}")]
+        [Authorize(Policy = "IsMember")]
+        public async Task<ActionResult<ChannelDto>> Details(Guid id)
+        {
+            return await mediator.Send(new Details.Query{Id = id});
+        }
     }
 }

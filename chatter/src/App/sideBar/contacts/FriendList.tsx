@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { IFriend } from '../../../models/friend'
 import { observer } from 'mobx-react-lite'
 import './FriendList.css'
@@ -13,10 +13,13 @@ interface IProps {
     accept?: (friend: IFriend) => Promise<void>,
     deleted?: (id: string, predicate: string) => Promise<void>,
     predicate?: string,
-    request?: boolean
+    request?: boolean,
+    selected?: string,
+    setSelected?: (value: React.SetStateAction<string>) => void
 }
 
-const FriendList: React.FC<IProps> = ({ friends, accept, deleted, predicate, request }) => {
+const FriendList: React.FC<IProps> = ({ friends, accept, deleted,
+    predicate, request, selected, setSelected }) => {
     const rootStore = useContext(RootStoreContext)
     const { openModal, closeModal } = rootStore.modalStore
     const { unfriend } = rootStore.friendStore
@@ -41,7 +44,8 @@ const FriendList: React.FC<IProps> = ({ friends, accept, deleted, predicate, req
     return (
         <div className='friend-list'>
             {friends?.map(friend =>
-                <div key={friend.id} className='friend-list-item'>
+                <div key={friend.id} className={`friend-list-item ${selected && 'selected-user'}`}
+                    onClick={() => setSelected!(friend.id)}>
                     <FriendsInfo friend={friend} />
                     {request ? (
                         <div>

@@ -10,8 +10,30 @@
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 0 10px;
+    padding-left: 10px;
 }
 
 .text-input:focus {
     outline: none;
+}
+
+.message-field {
+    border-top: 1px solid #f0f0f0;
+    height: 40px;
+    padding: 10px;
+}
+
+.message-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    padding-left: 10px;
+    font-size: 15px;
+}
+
+.message-input:focus {
+    outline: none;
+    border: 1px solid #ffc14e;
 }

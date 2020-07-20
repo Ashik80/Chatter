@@ -3,6 +3,7 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 5px;
+    cursor: pointer;
 }
 
 .channel-list > button > i {
@@ -17,4 +18,11 @@
 
 .channel-list > button:focus {
     outline: none;
+}
+
+.selected-channel {
+    background-color: orange;
+    color: #282c34;
+    border-radius: 5px;
+    padding: 4px;
 }

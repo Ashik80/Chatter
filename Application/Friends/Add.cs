@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Errors;
 using Application.Interfaces;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -16,6 +17,15 @@ namespace Application.Friends
         public class Command : IRequest
         {
             public string Code { get; set; }
+        }
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Code).NotEmpty()
+                    .MinimumLength(7).WithMessage("User code is 7 letters long");
+            }
         }
 
         public class Handler : IRequestHandler<Command>

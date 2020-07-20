@@ -8,3 +8,10 @@
 .friend-list {
     box-sizing: border-box;
 }
+
+.selected-user {
+    background-color: orange;
+    color: #282c34;
+    border-radius: 5px;
+    padding: 4px;
+}
