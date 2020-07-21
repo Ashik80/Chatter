@@ -4,21 +4,23 @@ import SelectInput from '../../formComponents/SelectInput'
 import ActionSubmit from '../ActionSubmit'
 import { RootStoreContext } from '../../../stores/rootStore'
 import TextInput from '../../formComponents/TextInput'
+import { observer } from 'mobx-react-lite'
+import ResponseMessage from '../../errors/ResponseMessage'
 
 const SelectChannels = (props: any) => {
     const rootStore = useContext(RootStoreContext)
-    const {listChannels, channels, addUser} = rootStore.channelStore
+    const {listChannels, userChannels, addUser} = rootStore.channelStore
 
     const [sent, setSent] = useState(false)
-
-    const initialize = {
-        id: channels[0].id,
-        userId: props.userId
-    }
 
     useEffect(() => {
         listChannels()
     }, [listChannels])
+
+    const initialize = {
+        id: userChannels[0].id,
+        userId: props.userId
+    }
 
     return (
         <Form
@@ -34,15 +36,15 @@ const SelectChannels = (props: any) => {
             }}
             render={({handleSubmit}) => (
                 <form onSubmit={handleSubmit}>
-                    <Field name='id' component={SelectInput} options={channels} />
+                    <Field name='id' component={SelectInput} options={userChannels} />
                     <Field type='hidden' name='userId' component={TextInput} />
                     <br />
                     <ActionSubmit buttonText='Add' />
-                    {sent && <div>Added!</div>}
+                    {sent && <ResponseMessage message='All done!' />}
                 </form>
             )}
         />
     )
 }
 
-export default SelectChannels
+export default observer(SelectChannels)

@@ -2,14 +2,14 @@ import React, { useState, useContext, useEffect } from 'react'
 import './Contacts.css'
 import { Form, Field } from 'react-final-form'
 import TextInput from '../../formComponents/TextInput'
-import ChannelList from './ChannelList'
-import { IChannel } from '../../../models/channel'
+import ChannelList from './channelComponents/ChannelList'
 import { observer } from 'mobx-react-lite'
-import FriendList from './FriendList'
-import {v4 as uuid} from 'uuid'
+import FriendList from './friendComponents/FriendList'
 import { RootStoreContext } from '../../../stores/rootStore'
 import { submitFormHandler } from './submitHandler'
 import ContactHeader from './ContactHeader'
+import { combineValidators, isRequired } from 'revalidate'
+import ResponseMessage from '../../errors/ResponseMessage'
 
 interface IProps {
     header: string,
@@ -28,7 +28,6 @@ const Contacts: React.FC<IProps> = ({ header, placeholder, inputName, channel })
     const [active, setActive] = useState(false)
     const [inputMode, setInputMode] = useState(false)
     const [sentMode, setSentMode] = useState(false)
-    const [selected, setSelected] = useState('')
 
     const visibilityHandler = () => {
         channel ? setChannelVisibility(!channelVisibility) : setFriendVisibility(!friendVisibility)
@@ -52,11 +51,16 @@ const Contacts: React.FC<IProps> = ({ header, placeholder, inputName, channel })
         setChannelVisibility, setActive, addFriend, setSentMode)
     }
 
+    const validate = combineValidators({
+        [inputName]: isRequired(inputName)
+    })
+
     return (
         <div className='contacts'>
             <ContactHeader visibilityHandler={visibilityHandler} header={header}
                 active={active} inputMode={inputMode} inputModeHandler={inputModeHandler}/>
-            {inputMode && <Form 
+            {inputMode && <Form
+                validate={validate}
                 onSubmit={submitHandler}
                 render={({handleSubmit}) => (
                     <form onSubmit={handleSubmit}>
@@ -64,13 +68,12 @@ const Contacts: React.FC<IProps> = ({ header, placeholder, inputName, channel })
                     </form>
                 )}
             />}
-            {sentMode && !channel && <div>Sent</div>}
+            {sentMode && !channel && <ResponseMessage message='Request sent' />}
             {channel && channelVisibility && 
-                <ChannelList selected={selected} setSelected={setSelected}
-                    contacts={channels} deleteChannel={deleteChannel} />
+                <ChannelList channels={channels} deleteChannel={deleteChannel} />
             }
             {!channel && friendVisibility && 
-                <FriendList friends={friends} selected={selected} setSelected={setSelected} />}
+                <FriendList friends={friends} />}
         </div>
     )
 }

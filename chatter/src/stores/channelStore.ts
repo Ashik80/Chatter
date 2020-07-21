@@ -1,4 +1,4 @@
-import { observable, action, runInAction } from "mobx";
+import { observable, action, runInAction, computed } from "mobx";
 import { IChannel, IChannelFormValues } from "../models/channel";
 import agent from "../App/api/agent";
 import { RootStore } from "./rootStore";
@@ -11,6 +11,11 @@ export default class ChannelStore {
 
     @observable channels: IChannel[] = []
     @observable channel: IChannel | null = null
+
+    @computed get userChannels(){
+        let channel = this.channels.filter(x => x.isAdmin)
+        return channel
+    }
 
     @action addChannel = async (values: IChannel) => {
         try {

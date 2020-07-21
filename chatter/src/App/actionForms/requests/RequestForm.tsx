@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, SyntheticEvent } from 'react'
 import RequestNav from './RequestNav'
-import FriendList from '../../sideBar/contacts/FriendList'
+import FriendList from '../../sideBar/contacts/friendComponents/FriendList'
 import { RootStoreContext } from '../../../stores/rootStore'
 import { observer } from 'mobx-react-lite'
 

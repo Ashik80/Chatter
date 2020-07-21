@@ -6,6 +6,7 @@ import SpecialButton from '../loginButtons/SpecialButton'
 import LoginForm from './LoginForm'
 import { IRegisterFormValues } from '../../models/user'
 import { RootStoreContext } from '../../stores/rootStore'
+import FormExtra from './FormExtra'
 
 const RegisterForm = () => {
     const rootStore = useContext(RootStoreContext)
@@ -30,18 +31,8 @@ const RegisterForm = () => {
                         />
                         <br />
                         <SpecialButton disabled={submitting} />
-                        <div className='login-extra'>
-                            <small>
-                                Already have an account?
-                            </small>
-                            <br />
-                            <small 
-                                className='login-extra-action'
-                                onClick={() => openModal(<LoginForm />)}
-                            >
-                                Login
-                            </small>
-                        </div>
+                        <FormExtra info='Already have an account?' action='Login'
+                            onClick={() => openModal(<LoginForm />)} />
                     </form>
                 )}
             />

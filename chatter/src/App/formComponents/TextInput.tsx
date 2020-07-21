@@ -1,6 +1,7 @@
 import React from 'react'
 import { FieldRenderProps } from 'react-final-form'
 import './TextInput.css'
+import ResponseMessage from '../errors/ResponseMessage'
 
 interface IProps extends FieldRenderProps<string> {
     contact: boolean,
@@ -24,7 +25,8 @@ const TextInput: React.FC<IProps> = ({ input, placeholder, message, contact, met
                 className={message ? 'message-input' : 'text-input'}
                 style={contact ? inputStyle : {}}
             />
-            {touched && error && <div>{error}</div>}
+            {touched && error && !message && 
+                <ResponseMessage message={error} error />}
         </div>
     )
 }
