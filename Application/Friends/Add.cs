@@ -45,7 +45,7 @@ namespace Application.Friends
 
                 if (user == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new { user = "Not found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { User = "not found" });
                 }
 
                 var currentUser = await context.Users
@@ -59,7 +59,7 @@ namespace Application.Friends
                 
                 if(existingFriendReq || existingFriendReq2)
                 {
-                    throw new RestException(HttpStatusCode.BadRequest, new{request = "Already exists"});
+                    throw new RestException(HttpStatusCode.BadRequest, new{Request = "already exists"});
                 }
 
                 var existingFriend = await context.Friends
@@ -67,7 +67,7 @@ namespace Application.Friends
                 
                 if(existingFriend)
                 {
-                    throw new RestException(HttpStatusCode.BadRequest, new{friend = "Already exists"});
+                    throw new RestException(HttpStatusCode.BadRequest, new{Friend = "already exists"});
                 }
 
                 var friendRequest = new FriendRequest
@@ -82,7 +82,7 @@ namespace Application.Friends
 
                 if (success) return Unit.Value;
 
-                throw new Exception("Problem saving activity");
+                throw new Exception("Problem adding friend");
             }
         }
     }

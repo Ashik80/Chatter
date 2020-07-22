@@ -2,6 +2,7 @@ import { observable, action, runInAction, computed } from "mobx";
 import { IChannel, IChannelFormValues } from "../models/channel";
 import agent from "../App/api/agent";
 import { RootStore } from "./rootStore";
+import { toast } from "react-toastify";
 
 export default class ChannelStore {
     rootStore: RootStore
@@ -11,6 +12,7 @@ export default class ChannelStore {
 
     @observable channels: IChannel[] = []
     @observable channel: IChannel | null = null
+    @observable added = false
 
     @computed get userChannels(){
         let channel = this.channels.filter(x => x.isAdmin)
@@ -71,10 +73,17 @@ export default class ChannelStore {
     }
 
     @action addUser = async (id: string, userId: string) => {
+        this.added = false
         try {
             await agent.Channel.addUser(id, userId)
+            runInAction(() => {
+                this.added = true
+                setTimeout(() => runInAction(() => this.added = false), 2000)
+            })
         } catch (error) {
-            console.log(error)
+            Object.values(error.data.errors).flat().map((err) => 
+                toast.error(`${Object.keys(error.data.errors)} ${err}`)
+            )
         }
     }
 

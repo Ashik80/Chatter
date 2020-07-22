@@ -8,18 +8,20 @@ import { observer } from 'mobx-react-lite'
 import 'mobx-react-lite/batchingForReactDom'
 import { history } from '..'
 import { RootStoreContext } from '../stores/rootStore'
+import { ToastContainer } from 'react-toastify'
 
 const App = () => {
     const rootStore = useContext(RootStoreContext)
-    const {currentUser, getToken} = rootStore.userStore
-    const {open} = rootStore.modalStore
+    const { currentUser, token } = rootStore.userStore
+    const { open } = rootStore.modalStore
 
     useEffect(() => {
-        if(getToken) currentUser().finally(() => history.push('/messenger'))
-    }, [currentUser, getToken])
+        if(token) currentUser().finally(() => history.push('/messenger'))
+    }, [currentUser, token])
 
     return (
         <div className='app'>
+            <ToastContainer position='top-right' hideProgressBar />
             {open && <Modal />}
             <Route exact path='/' component={LandingPage} />
             <Route path='/get-started' component={GetStarted} />

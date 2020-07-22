@@ -38,7 +38,7 @@ namespace Application.Message.Channel
 
                 if (channel == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new { channel = "Not found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { Channel = "not found" });
                 }
 
                 var user = await context.Users
@@ -47,9 +47,9 @@ namespace Application.Message.Channel
                 var isMember = await context.ChannelUser
                     .AnyAsync(x => x.Channel == channel && x.AppUser == user);
 
-                if(!isMember)
+                if (!isMember)
                 {
-                    throw new RestException(HttpStatusCode.Forbidden, new{user = "Not a member"});
+                    throw new RestException(HttpStatusCode.Forbidden, new { User = "not a member" });
                 }
 
                 var channelMessage = new ChannelMessage
@@ -70,7 +70,7 @@ namespace Application.Message.Channel
                     return messageDto;
                 }
 
-                throw new Exception("Problem saving activity");
+                throw new Exception("Problem sending message");
             }
         }
     }

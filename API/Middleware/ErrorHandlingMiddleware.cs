@@ -52,6 +52,8 @@ namespace API.Middleware
                 }
             }
 
+            context.Response.ContentType = "application/json";
+
             if(errors != null)
             {
                 var result = JsonSerializer.Serialize(new {errors});

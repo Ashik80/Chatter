@@ -1,10 +1,14 @@
-import React, { useState, SyntheticEvent } from 'react'
+import React, { useState, SyntheticEvent, useEffect, useContext } from 'react'
 import SideBar from '../sideBar/SideBar'
 import Content from '../content/Content'
 import './Messenger.css'
 import { observer } from 'mobx-react-lite'
+import { RootStoreContext } from '../../stores/rootStore'
 
 const Messenger = () => {
+    const rootStore = useContext(RootStoreContext)
+    const {currentUser} = rootStore.userStore
+
     const [dropdown, setDropdown] = useState(false)
 
     const clickHandle = () => {
@@ -16,6 +20,10 @@ const Messenger = () => {
             setDropdown(false)
         }
     }
+
+    useEffect(() => {
+        currentUser()
+    }, [currentUser])
 
     return (
         <div id='messenger' className='messenger' onClick={anywhereHandle}>

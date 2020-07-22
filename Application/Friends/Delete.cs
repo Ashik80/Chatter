@@ -41,7 +41,7 @@ namespace Application.Friends
 
                 if(friend == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new{friend = "Not found"});
+                    throw new RestException(HttpStatusCode.NotFound, new{Friend = "not found"});
                 }
 
                 context.Friends.Remove(friend);

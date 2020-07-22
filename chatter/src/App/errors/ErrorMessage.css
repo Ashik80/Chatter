@@ -1,0 +1,17 @@
+.error-message {
+    border-radius: 5px;
+    color: #912D2B;
+    background-color: #FFF6F6;
+    border: 1px solid #912D2B;
+    padding: 10px 20px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.error-header {
+    font-weight: bold;
+}
+
+.error-list {
+    padding-left: 20px;
+}

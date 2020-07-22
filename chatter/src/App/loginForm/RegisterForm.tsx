@@ -7,17 +7,31 @@ import LoginForm from './LoginForm'
 import { IRegisterFormValues } from '../../models/user'
 import { RootStoreContext } from '../../stores/rootStore'
 import FormExtra from './FormExtra'
+import { FORM_ERROR } from 'final-form'
+import ErrorMessage from '../errors/ErrorMessage'
+import { combineValidators, isRequired } from 'revalidate'
+
+const validate = combineValidators({
+    displayName: isRequired('Display name'),
+    userName: isRequired('Username'),
+    email: isRequired('Email'),
+    password: isRequired('Password')
+})
 
 const RegisterForm = () => {
     const rootStore = useContext(RootStoreContext)
-    const {openModal, closeModal} = rootStore.modalStore
+    const {openModal} = rootStore.modalStore
     const {register} = rootStore.userStore
 
     return (
         <div>
             <Form
-                onSubmit={(values: IRegisterFormValues) => register(values).then(() => closeModal())}
-                render={({handleSubmit, submitting}) => (
+                validate={validate}
+                onSubmit={(values: IRegisterFormValues) => register(values).catch(error => ({
+                    [FORM_ERROR]: error
+                }))}
+                render={({handleSubmit, submitting, form, dirtySinceLastSubmit, 
+                    submitError, pristine, invalid}) => (
                     <form onSubmit={handleSubmit} className='login-form'>
                         <div className='login-header'>Sign up on Chatter</div>
                         <Field name='displayName' placeholder='Display Name' component={TextInput} />
@@ -29,8 +43,10 @@ const RegisterForm = () => {
                             component={TextInput}
                             placeholder='Password'
                         />
+                        {submitError && !dirtySinceLastSubmit && <ErrorMessage error={submitError} />}
                         <br />
-                        <SpecialButton disabled={submitting} />
+                        <SpecialButton 
+                            disabled={(invalid && !dirtySinceLastSubmit) || pristine || submitting} />
                         <FormExtra info='Already have an account?' action='Login'
                             onClick={() => openModal(<LoginForm />)} />
                     </form>

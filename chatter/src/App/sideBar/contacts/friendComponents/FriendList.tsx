@@ -2,13 +2,11 @@ import React, { useContext } from 'react'
 import { IFriend } from '../../../../models/friend'
 import { observer } from 'mobx-react-lite'
 import './FriendList.css'
-import ActionButton from '../../../actionForms/ActionButton'
 import { RootStoreContext } from '../../../../stores/rootStore'
-import ActionForm from '../../../actionForms/ActionForm'
 import FriendsInfo from '../../../friends/FriendsInfo'
-import SelectChannels from '../../../actionForms/channels/SelectChannels'
 import FriendButtonSet from './FriendButtonSet'
 import RequestButtonSet from './RequestButtonSet'
+import { unfriendHandle, addToChannelHandle } from './friendHandlers'
 
 interface IProps {
     friends: IFriend[] | undefined,
@@ -26,20 +24,11 @@ const FriendList: React.FC<IProps> = ({ friends, accept, deleted,
     const { selected, setSelected } = rootStore.selectionStore
 
     const unfriendHandler = (friend: IFriend) => {
-        openModal(<ActionForm
-            header='Are you sure you want to unfriend this user?'
-            content={<FriendsInfo friend={friend} />}
-            clickHandle={() => unfriend(friend.id).then(() => closeModal())}
-            buttonText='Unfriend'
-        />)
+        unfriendHandle(friend, openModal, unfriend, closeModal)
     }
 
     const addToChannelHandler = (id: string) => {
-        openModal(<ActionForm
-            header='Add user to channel'
-            content={<SelectChannels userId={id} />}
-            hideButton={true}
-        />)
+        addToChannelHandle(id, openModal)
     }
 
     return (

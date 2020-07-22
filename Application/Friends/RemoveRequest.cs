@@ -59,7 +59,7 @@ namespace Application.Friends
 
                 if (friendRequest == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new { request = "Not found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { Request = "not found" });
                 }
 
                 context.FriendRequest.Remove(friendRequest);
@@ -68,7 +68,7 @@ namespace Application.Friends
 
                 if (success) return Unit.Value;
 
-                throw new Exception("Problem saving activity");
+                throw new Exception("Problem removing request");
             }
         }
     }

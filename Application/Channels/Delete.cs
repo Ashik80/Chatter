@@ -29,7 +29,7 @@ namespace Application.Channels
 
                 if (channel == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new { channel = "Not found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { Channel = "not found" });
                 }
 
                 _context.Channel.Remove(channel);

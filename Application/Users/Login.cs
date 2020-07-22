@@ -46,7 +46,7 @@ namespace Application.Users
 
                 if (user == null)
                 {
-                    throw new RestException(HttpStatusCode.Unauthorized, new { user = "User does not exist" });
+                    throw new RestException(HttpStatusCode.Unauthorized, new { User = "Wrong credentials" });
                 }
 
                 var result = await signInManager.CheckPasswordSignInAsync(user, request.Password, false);
@@ -63,6 +63,8 @@ namespace Application.Users
                         Image = user.Image
                     };
                 }
+                else throw new RestException(HttpStatusCode.Unauthorized, 
+                    new { User = "Wrong credentials" });
 
                 throw new Exception("Problem signing in");
             }

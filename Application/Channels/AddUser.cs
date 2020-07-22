@@ -38,14 +38,14 @@ namespace Application.Channels
 
                 if (user == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new { user = "Not found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { User = "not found" });
                 }
 
                 var channel = await context.Channel.FindAsync(request.ChannelId);
 
                 if (channel == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new { channel = "Not found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { Channel = "not found" });
                 }
 
                 var existing = await context.ChannelUser
@@ -54,7 +54,7 @@ namespace Application.Channels
                 if (existing != null)
                 {
                     throw new RestException(HttpStatusCode.BadRequest,
-                        new{user = "Already exists in this channel"});
+                        new{User = "already exists in this channel"});
                 }
 
                 var channelUser = new ChannelUser
@@ -70,7 +70,7 @@ namespace Application.Channels
 
                 if (success) return Unit.Value;
 
-                throw new Exception("Problem saving activity");
+                throw new Exception("Problem adding user to channel");
             }
         }
     }

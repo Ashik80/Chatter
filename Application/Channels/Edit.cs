@@ -39,7 +39,7 @@ namespace Application.Channels
 
                 if (channel == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new { channel = "Not found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { Channel = "not found" });
                 }
 
                 channel.Name = ("#" + request.Name) ?? channel.Name;

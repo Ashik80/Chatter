@@ -43,11 +43,6 @@ namespace Application.Channels
                 var user = await context.Users
                     .FirstOrDefaultAsync(x => x.UserName == userAccessor.GetCurrentUsername());
 
-                if (user == null)
-                {
-                    throw new RestException(HttpStatusCode.Unauthorized, new { user = "User not found" });
-                }
-
                 var channel = new Channel
                 {
                     Id = request.Id,

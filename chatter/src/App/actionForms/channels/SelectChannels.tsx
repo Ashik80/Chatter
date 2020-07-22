@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Form, Field } from 'react-final-form'
 import SelectInput from '../../formComponents/SelectInput'
 import ActionSubmit from '../ActionSubmit'
@@ -9,9 +9,7 @@ import ResponseMessage from '../../errors/ResponseMessage'
 
 const SelectChannels = (props: any) => {
     const rootStore = useContext(RootStoreContext)
-    const {listChannels, userChannels, addUser} = rootStore.channelStore
-
-    const [sent, setSent] = useState(false)
+    const {listChannels, userChannels, addUser, added} = rootStore.channelStore
 
     useEffect(() => {
         listChannels()
@@ -25,22 +23,14 @@ const SelectChannels = (props: any) => {
     return (
         <Form
             initialValues={initialize}
-            onSubmit={(values) => {
-                addUser(values.id, values.userId)
-                .then(() => {
-                    setSent(true)
-                    setTimeout(() => {
-                        setSent(false)
-                    }, 2000)
-                })
-            }}
+            onSubmit={(values) => addUser(values.id, values.userId)}
             render={({handleSubmit}) => (
                 <form onSubmit={handleSubmit}>
                     <Field name='id' component={SelectInput} options={userChannels} />
                     <Field type='hidden' name='userId' component={TextInput} />
                     <br />
                     <ActionSubmit buttonText='Add' />
-                    {sent && <ResponseMessage message='All done!' />}
+                    {added && <ResponseMessage message='All done!' />}
                 </form>
             )}
         />

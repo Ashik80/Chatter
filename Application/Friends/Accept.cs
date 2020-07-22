@@ -39,7 +39,7 @@ namespace Application.Friends
 
                 if (frndRqst == null)
                 {
-                    throw new RestException(HttpStatusCode.NotFound, new { request = "Not found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { Request = "not found" });
                 }
 
                 var friends = new Domain.Friends
@@ -62,7 +62,7 @@ namespace Application.Friends
 
                 if (success) return Unit.Value;
 
-                throw new Exception("Problem saving activity");
+                throw new Exception("A problem occurred");
             }
         }
     }

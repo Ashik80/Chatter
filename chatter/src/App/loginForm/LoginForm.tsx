@@ -7,18 +7,30 @@ import RegisterForm from './RegisterForm'
 import { ILoginFromValues } from '../../models/user'
 import { RootStoreContext } from '../../stores/rootStore'
 import FormExtra from './FormExtra'
+import { combineValidators, isRequired } from 'revalidate'
+import { FORM_ERROR } from 'final-form'
+import ErrorMessage from '../errors/ErrorMessage'
+
+const validate = combineValidators({
+    email: isRequired('Email'),
+    password: isRequired('Password')
+})
 
 const LoginForm = () => {
     const rootStore = useContext(RootStoreContext)
-    const {modalStore, userStore} = rootStore
-    const {openModal, closeModal} = modalStore
-    const {login} = userStore
+    const { modalStore, userStore } = rootStore
+    const { openModal } = modalStore
+    const { login } = userStore
 
     return (
         <div>
             <Form
-                onSubmit={(values: ILoginFromValues) => login(values).then(() => closeModal())}
-                render={({ handleSubmit, submitting, invalid, pristine, form }) => (
+                validate={validate}
+                onSubmit={(values: ILoginFromValues) => login(values).catch(error => ({
+                    [FORM_ERROR]: error
+                }))}
+                render={({ handleSubmit, submitError, submitting, 
+                    invalid, dirtySinceLastSubmit, pristine, form }) => (
                     <form onSubmit={handleSubmit} className='login-form'>
                         <div className='login-header'>Sign in to Chatter</div>
                         <Field name='email' component={TextInput} placeholder='Email' />
@@ -28,11 +40,12 @@ const LoginForm = () => {
                             component={TextInput}
                             placeholder='Password'
                         />
+                        {!dirtySinceLastSubmit && submitError && <ErrorMessage error={submitError} />}
                         <br />
-                        <SpecialButton disabled={(submitting || invalid || pristine)} />
+                        <SpecialButton
+                            disabled={((invalid && !dirtySinceLastSubmit) || pristine || submitting)} />
                         <FormExtra info="Don't have an account?" action='Create one'
-                            onClick={() => openModal(<RegisterForm />)}/>
-                        <pre>{JSON.stringify(form.getState(), null, 2)}</pre>
+                            onClick={() => openModal(<RegisterForm />)} />
                     </form>
                 )}
             />

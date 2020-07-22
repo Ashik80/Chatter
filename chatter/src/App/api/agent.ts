@@ -3,15 +3,33 @@ import { ILoginFromValues, IUser, IRegisterFormValues } from '../../models/user'
 import { IChannel, IChannelFormValues } from '../../models/channel'
 import { IFriend } from '../../models/friend'
 import { IRequest } from '../../models/request'
+import { toast } from 'react-toastify'
 
 axios.defaults.baseURL = 'http://localhost:5000/api'
 
 axios.interceptors.request.use(config => {
     const token = window.localStorage.getItem('jwt')
-    if(token) config.headers.Authorization = `Bearer ${token}`
+    if (token) config.headers.Authorization = `Bearer ${token}`
     return config
 }, error => {
     return Promise.reject(error)
+})
+
+axios.interceptors.response.use(undefined, error => {
+    if (error.message === 'Network Error' && !error.response) {
+        toast.error(`🚫 Network Error - please try again later`)
+    }
+    const { status, config, data } = error.response
+    if (status === 400 && config.method === 'get' && data.errors.hasOwnProperty('id')) {
+        toast.error('Not Found')
+    }
+    if (status === 404) {
+        toast.error('Not Found')
+    }
+    if (status === 500) {
+        toast.error("🚫 Server Error")
+    }
+    throw error.response
 })
 
 const responseBody = (response: AxiosResponse) => response.data
@@ -26,7 +44,7 @@ const request = {
 const User = {
     login: (values: ILoginFromValues): Promise<IUser> => request.post('users/login', values),
     register: (values: IRegisterFormValues) => request.post('users/register', values),
-    currentUser: (): Promise<IUser> => request.get('/users')
+    currentUser: (): Promise<IUser> => request.get('users')
 }
 
 const Channel = {
@@ -35,13 +53,13 @@ const Channel = {
     delete: (id: string) => request.del(`channels/${id}`),
     edit: (id: string, value: IChannelFormValues) => request.put(`channels/${id}`, value),
     addUser: (id: string, userId: string) => request.post(`channels/add/${id}/${userId}`, {}),
-    details: (id: string): Promise<IChannel> =>  request.get(`channels/${id}`)
+    details: (id: string): Promise<IChannel> => request.get(`channels/${id}`)
 }
 
 const Friend = {
     list: (): Promise<IFriend[]> => request.get('friends'),
     add: (code: string) => request.post('friends', code),
-    listRequest: (predicate: string): Promise<IRequest> => 
+    listRequest: (predicate: string): Promise<IRequest> =>
         request.get(`friends/requests?predicate=${predicate}`),
     accept: (id: string) => request.post(`friends/${id}`, {}),
     delete: (id: string, predicate: string) => request.del(`friends/requests/${id}?predicate=${predicate}`),
