@@ -24,7 +24,8 @@ axios.interceptors.response.use(undefined, error => {
         toast.error('Not Found')
     }
     if (status === 404) {
-        toast.error('Not Found')
+        Object.values(data.errors).flat().map(err => 
+            toast.error(`${Object.keys(data.errors)} ${err}`))
     }
     if (status === 500) {
         toast.error("🚫 Server Error")

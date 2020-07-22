@@ -24,7 +24,7 @@ namespace Application.Friends
             public CommandValidator()
             {
                 RuleFor(x => x.Code).NotEmpty()
-                    .MinimumLength(7).WithMessage("User code is 7 letters long");
+                    .MinimumLength(8).WithMessage("User code is 7 letters long with a # in front");
             }
         }
 

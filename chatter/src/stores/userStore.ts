@@ -65,9 +65,8 @@ export default class UserStore {
                 this.setToken(user.token)
             })
         } catch (error) {
-            toast.error('🚫 Unauthorized access not allowec')
+            toast.error('🚫 Unauthorized access not allowed')
             history.push('/')
-            console.log(error)
         }
     }
 

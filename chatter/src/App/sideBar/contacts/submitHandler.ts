@@ -1,5 +1,6 @@
 import { IChannel } from "../../../models/channel"
 import { v4 as uuid } from 'uuid'
+import { FORM_ERROR } from "final-form"
 
 export const submitFormHandler = (
     values: any,
@@ -9,22 +10,20 @@ export const submitFormHandler = (
     setChannelVisibility: (value: React.SetStateAction<boolean>) => void,
     setActive: (value: React.SetStateAction<boolean>) => void,
     addFriend: (code: string) => Promise<void>,
-    setSentMode: (value: React.SetStateAction<boolean>) => void
 ) => {
     if (header === 'channels') {
         const channel: IChannel = {
             ...values,
             id: uuid()
         }
-        addChannel(channel).then(() => {
+        return addChannel(channel).then(() => {
             setInputMode(false)
             setChannelVisibility(true)
             setActive(true)
         })
     } else if (header === 'friends') {
-        addFriend(values).then(() => {
+        return addFriend(values).then(() => {
             setInputMode(false)
-            setSentMode(true)
         })
     }
 }

@@ -10,6 +10,8 @@ import { submitFormHandler } from './submitHandler'
 import ContactHeader from './ContactHeader'
 import { combineValidators, isRequired } from 'revalidate'
 import ResponseMessage from '../../errors/ResponseMessage'
+import ErrorMessage from '../../errors/ErrorMessage'
+import { FORM_ERROR } from 'final-form'
 
 interface IProps {
     header: string,
@@ -20,23 +22,18 @@ interface IProps {
 
 const Contacts: React.FC<IProps> = ({ header, placeholder, inputName, channel }) => {
     const rootStore = useContext(RootStoreContext)
-    const {addChannel, channels, listChannels, deleteChannel} = rootStore.channelStore
-    const {loadFriends, friends, addFriend} = rootStore.friendStore
+    const { addChannel, channels, listChannels, deleteChannel } = rootStore.channelStore
+    const { loadFriends, friends, addFriend, sent } = rootStore.friendStore
 
     const [channelVisibility, setChannelVisibility] = useState(false)
     const [friendVisibility, setFriendVisibility] = useState(false)
     const [active, setActive] = useState(false)
     const [inputMode, setInputMode] = useState(false)
-    const [sentMode, setSentMode] = useState(false)
 
     const visibilityHandler = () => {
         channel ? setChannelVisibility(!channelVisibility) : setFriendVisibility(!friendVisibility)
         setActive(!active)
     }
-
-    setTimeout(() => {
-        setSentMode(false)
-    }, 2000);
 
     useEffect(() => {
         channel ? listChannels() : loadFriends()
@@ -47,8 +44,8 @@ const Contacts: React.FC<IProps> = ({ header, placeholder, inputName, channel })
     }
 
     const submitHandler = (values: any) => {
-        submitFormHandler(values, header, addChannel, setInputMode,
-        setChannelVisibility, setActive, addFriend, setSentMode)
+        return submitFormHandler(values, header, addChannel, setInputMode,
+            setChannelVisibility, setActive, addFriend)
     }
 
     const validate = combineValidators({
@@ -58,21 +55,23 @@ const Contacts: React.FC<IProps> = ({ header, placeholder, inputName, channel })
     return (
         <div className='contacts'>
             <ContactHeader visibilityHandler={visibilityHandler} header={header}
-                active={active} inputMode={inputMode} inputModeHandler={inputModeHandler}/>
+                active={active} inputMode={inputMode} inputModeHandler={inputModeHandler} />
             {inputMode && <Form
                 validate={validate}
-                onSubmit={submitHandler}
-                render={({handleSubmit}) => (
+                onSubmit={(values) => submitHandler(values)!.catch(error => ({ [FORM_ERROR]: error }))}
+                render={({ handleSubmit, submitError, dirtySinceLastSubmit }) => (
                     <form onSubmit={handleSubmit}>
                         <Field name={inputName} component={TextInput} contact placeholder={placeholder} />
+                        {submitError && submitError.status !== 404 && !dirtySinceLastSubmit && 
+                            <ErrorMessage error={submitError} />}
                     </form>
                 )}
             />}
-            {sentMode && !channel && <ResponseMessage message='Request sent' />}
-            {channel && channelVisibility && 
+            {sent && !channel && <ResponseMessage message='Request sent' />}
+            {channel && channelVisibility &&
                 <ChannelList channels={channels} deleteChannel={deleteChannel} />
             }
-            {!channel && friendVisibility && 
+            {!channel && friendVisibility &&
                 <FriendList friends={friends} />}
         </div>
     )

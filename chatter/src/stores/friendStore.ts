@@ -12,6 +12,7 @@ export default class FriendStore {
 
     @observable friends: IFriend[] = []
     @observable requests: IRequest | null = null
+    @observable sent = false
 
     @action loadFriends = async () => {
         try {
@@ -25,10 +26,15 @@ export default class FriendStore {
     }
 
     @action addFriend = async (code: string) => {
+        this.sent = false
         try {
             await agent.Friend.add(code)
+            runInAction(() => {
+                this.sent = true
+                setTimeout(() => runInAction(() => this.sent = false), 2000);
+            })
         } catch (error) {
-            console.log(error)
+            throw error
         }
     }
 

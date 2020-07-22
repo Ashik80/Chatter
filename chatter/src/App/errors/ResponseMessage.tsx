@@ -8,7 +8,7 @@ const ResponseMessage = (props: any) => {
         textAlign: 'center' as 'center',
         borderRadius: 5,
         marginTop: 5,
-        border: `2px solid ${props.error ? '#912D2B' : '#4B784A'}`
+        border: `1px solid ${props.error ? '#912D2B' : '#4B784A'}`
     }
 
     return (
