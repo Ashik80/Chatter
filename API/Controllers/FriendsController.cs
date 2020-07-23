@@ -51,5 +51,11 @@ namespace API.Controllers
         {
             return await mediator.Send(new Delete.Command { Id = id });
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<FriendDto>> Details(string id)
+        {
+            return await mediator.Send(new Details.Query { Id = id });
+        }
     }
 }

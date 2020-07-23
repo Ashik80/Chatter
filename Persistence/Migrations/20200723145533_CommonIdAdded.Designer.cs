@@ -9,8 +9,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200717114918_NewMigration")]
-    partial class NewMigration
+    [Migration("20200723145533_CommonIdAdded")]
+    partial class CommonIdAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -105,6 +105,33 @@ namespace Persistence.Migrations
                     b.ToTable("Channel");
                 });
 
+            modelBuilder.Entity("Domain.ChannelMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ChannelId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SenderId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("SentTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChannelId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("ChannelMessage");
+                });
+
             modelBuilder.Entity("Domain.ChannelUser", b =>
                 {
                     b.Property<string>("AppUserId")
@@ -121,6 +148,33 @@ namespace Persistence.Migrations
                     b.HasIndex("ChannelId");
 
                     b.ToTable("ChannelUser");
+                });
+
+            modelBuilder.Entity("Domain.FriendMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReceiverId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SenderId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("SentTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("FriendMessage");
                 });
 
             modelBuilder.Entity("Domain.FriendRequest", b =>
@@ -146,13 +200,22 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Friends", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("AppUserId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FriendId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("AppUserId", "FriendId");
+                    b.Property<string>("FriendshipId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("FriendId");
 
@@ -287,6 +350,19 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Domain.ChannelMessage", b =>
+                {
+                    b.HasOne("Domain.Channel", "Channel")
+                        .WithMany("ChannelMessages")
+                        .HasForeignKey("ChannelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.AppUser", "Sender")
+                        .WithMany("ChannelMessages")
+                        .HasForeignKey("SenderId");
+                });
+
             modelBuilder.Entity("Domain.ChannelUser", b =>
                 {
                     b.HasOne("Domain.AppUser", "AppUser")
@@ -300,6 +376,17 @@ namespace Persistence.Migrations
                         .HasForeignKey("ChannelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.FriendMessage", b =>
+                {
+                    b.HasOne("Domain.AppUser", "Receiver")
+                        .WithMany("ReceivedMessages")
+                        .HasForeignKey("ReceiverId");
+
+                    b.HasOne("Domain.AppUser", "Sender")
+                        .WithMany("SentMessages")
+                        .HasForeignKey("SenderId");
                 });
 
             modelBuilder.Entity("Domain.FriendRequest", b =>
@@ -317,15 +404,11 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.AppUser", "AppUser")
                         .WithMany("Friends")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AppUserId");
 
                     b.HasOne("Domain.AppUser", "Friend")
                         .WithMany()
-                        .HasForeignKey("FriendId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FriendId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

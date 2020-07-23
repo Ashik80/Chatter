@@ -21,8 +21,10 @@ namespace Application.Friends
         {
             private readonly DataContext context;
             private readonly IUserAccessor userAccessor;
-            public Handler(DataContext context, IUserAccessor userAccessor)
+            private readonly IIdGenerator idGenerator;
+            public Handler(DataContext context, IUserAccessor userAccessor, IIdGenerator idGenerator)
             {
+                this.idGenerator = idGenerator;
                 this.userAccessor = userAccessor;
                 this.context = context;
             }
@@ -42,16 +44,20 @@ namespace Application.Friends
                     throw new RestException(HttpStatusCode.NotFound, new { Request = "not found" });
                 }
 
+                var commonID = idGenerator.GetCommonId();
+
                 var friends = new Domain.Friends
                 {
                     AppUser = user,
-                    Friend = friend
+                    Friend = friend,
+                    FriendshipId = commonID
                 };
 
                 var frineds2 = new Domain.Friends
                 {
                     AppUser = friend,
-                    Friend = user
+                    Friend = user,
+                    FriendshipId = commonID
                 };
 
                 context.Friends.Add(friends);

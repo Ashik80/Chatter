@@ -11,6 +11,7 @@ using Application.Users;
 using AutoMapper;
 using Domain;
 using FluentValidation.AspNetCore;
+using Infrastructure.Connection;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -113,6 +114,8 @@ namespace API
             services.AddScoped<ICodeGenerator, CodeGenerator>();
 
             services.AddScoped<IUserAccessor, UserAccessor>();
+
+            services.AddScoped<IIdGenerator, IdGenerator>();
 
             services.AddCors(opt =>
             {

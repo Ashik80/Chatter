@@ -20,7 +20,7 @@ const FriendList: React.FC<IProps> = ({ friends, accept, deleted,
     predicate, request }) => {
     const rootStore = useContext(RootStoreContext)
     const { openModal, closeModal } = rootStore.modalStore
-    const { unfriend } = rootStore.friendStore
+    const { unfriend, friendDetails } = rootStore.friendStore
     const { selected, setSelected } = rootStore.selectionStore
 
     const unfriendHandler = (friend: IFriend) => {
@@ -38,6 +38,7 @@ const FriendList: React.FC<IProps> = ({ friends, accept, deleted,
                     className={`friend-list-item ${selected === friend.id && 'selected-user'}`}
                     onClick={() => {
                         !request && setSelected(friend.id)
+                        !request && friendDetails(friend.id)
                     }}>
                     <FriendsInfo friend={friend} />
                     {request ?

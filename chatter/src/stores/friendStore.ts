@@ -11,6 +11,7 @@ export default class FriendStore {
     }
 
     @observable friends: IFriend[] = []
+    @observable friend: IFriend | null = null
     @observable requests: IRequest | null = null
     @observable sent = false
 
@@ -83,6 +84,18 @@ export default class FriendStore {
             await agent.Friend.unfriend(id)
             runInAction(() => {
                 this.friends = this.friends.filter(friend => friend.id !== id)
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    @action friendDetails = async (id: string) => {
+        this.rootStore.channelStore.channel = null
+        try{
+            const friend = await agent.Friend.details(id)
+            runInAction(() => {
+                this.friend = friend
             })
         } catch (error) {
             console.log(error)

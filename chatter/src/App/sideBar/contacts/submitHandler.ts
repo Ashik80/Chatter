@@ -1,6 +1,5 @@
 import { IChannel } from "../../../models/channel"
 import { v4 as uuid } from 'uuid'
-import { FORM_ERROR } from "final-form"
 
 export const submitFormHandler = (
     values: any,

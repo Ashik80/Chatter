@@ -11,6 +11,11 @@ namespace Application.Message.Channel
                 .ForMember(x => x.UserId, o => o.MapFrom(s => s.Sender.Id))
                 .ForMember(x => x.DisplayName, o => o.MapFrom(s => s.Sender.DisplayName))
                 .ForMember(x => x.Image, o => o.MapFrom(s => s.Sender.Image));
+
+            CreateMap<FriendMessage, MessageDto>()
+                .ForMember(x => x.UserId, o => o.MapFrom(s => s.Sender.Id))
+                .ForMember(x => x.DisplayName, o => o.MapFrom(s => s.Sender.DisplayName))
+                .ForMember(x => x.Image, o => o.MapFrom(s => s.Sender.Image));
         }
     }
 }

@@ -198,13 +198,22 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Friends", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("AppUserId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FriendId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("AppUserId", "FriendId");
+                    b.Property<string>("FriendshipId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("FriendId");
 
@@ -342,7 +351,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.ChannelMessage", b =>
                 {
                     b.HasOne("Domain.Channel", "Channel")
-                        .WithMany()
+                        .WithMany("ChannelMessages")
                         .HasForeignKey("ChannelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -393,15 +402,11 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.AppUser", "AppUser")
                         .WithMany("Friends")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AppUserId");
 
                     b.HasOne("Domain.AppUser", "Friend")
                         .WithMany()
-                        .HasForeignKey("FriendId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FriendId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -25,8 +25,6 @@ namespace Persistence
             builder.Entity<ChannelUser>().HasKey(x => new { x.AppUserId, x.ChannelId });
 
             builder.Entity<Friends>(x => {
-                x.HasKey(x => new { x.AppUserId, x.FriendId });
-
                 x.HasOne(x => x.AppUser)
                     .WithMany(x => x.Friends);
             });

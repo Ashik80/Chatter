@@ -1,5 +1,5 @@
 import { RootStore } from "./rootStore";
-import { observable, action, runInAction, computed } from "mobx";
+import { observable, action, runInAction, computed, values } from "mobx";
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 
 export default class MessageStore {
@@ -32,6 +32,12 @@ export default class MessageStore {
                 this.rootStore.channelStore.channel!.messages.push(message)
             })
         })
+
+        this.hubConnection.on('RecieveMessageFromFriend', message => {
+            runInAction(() => {
+                this.rootStore.friendStore.friend!.messages.push(message)
+            })
+        })
     }
 
     @action stopConnection = () => {
@@ -47,8 +53,24 @@ export default class MessageStore {
         }
     }
 
+    @action sendMessageToFriend = async (values: any) => {
+        values.id = this.rootStore.friendStore.friend!.id
+        values.commonId = this.rootStore.friendStore.friend!.friendshipID
+        try{
+            await this.hubConnection?.invoke('SendMessageToFriend', values)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     @computed get messagesByDate() {
-        var messages = this.rootStore.channelStore.channel?.messages.slice()
+        let messages
+        if(this.rootStore.channelStore.channel !== null){
+            messages = this.rootStore.channelStore.channel.messages.slice()
+        }
+        if(this.rootStore.friendStore.friend !== null){
+            messages = this.rootStore.friendStore.friend.messages.slice()
+        }
         messages = messages?.sort((a, b) =>
             Date.parse(a.sentTime) - Date.parse(b.sentTime)
         )

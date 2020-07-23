@@ -1,3 +1,4 @@
+using Application.Message.Channel;
 using AutoMapper;
 using Domain;
 
@@ -24,6 +25,11 @@ namespace Application.Friends
                 .ForMember(x => x.DisplayName, opt => opt.MapFrom(s => s.Friend.DisplayName))
                 .ForMember(x => x.Code, opt => opt.MapFrom(s => s.Friend.Code))
                 .ForMember(x => x.Image, opt => opt.MapFrom(s => s.Friend.Image));
+
+            CreateMap<FriendMessage, MessageDto>()
+                .ForMember(x => x.UserId, o => o.MapFrom(s => s.Sender.Id))
+                .ForMember(x => x.DisplayName, o => o.MapFrom(s => s.Sender.DisplayName))
+                .ForMember(x => x.Image, o => o.MapFrom(s => s.Sender.Image));
         }
     }
 }

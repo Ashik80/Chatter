@@ -88,6 +88,7 @@ export default class ChannelStore {
     }
 
     @action channelDetails = async (id: string) => {
+        this.rootStore.friendStore.friend = null
         try {
             const channel = await agent.Channel.details(id)
             runInAction(() => {

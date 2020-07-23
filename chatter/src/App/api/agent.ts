@@ -64,7 +64,8 @@ const Friend = {
         request.get(`friends/requests?predicate=${predicate}`),
     accept: (id: string) => request.post(`friends/${id}`, {}),
     delete: (id: string, predicate: string) => request.del(`friends/requests/${id}?predicate=${predicate}`),
-    unfriend: (id: string) => request.del(`friends/${id}`)
+    unfriend: (id: string) => request.del(`friends/${id}`),
+    details: (id: string): Promise<IFriend> => request.get(`friends/${id}`)
 }
 
 export default { User, Channel, Friend }

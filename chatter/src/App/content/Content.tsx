@@ -10,31 +10,41 @@ import Unselected from './unselected/Unselected'
 const Content = () => {
     const rootStore = useContext(RootStoreContext)
     const {channel} = rootStore.channelStore
-    const {createHubConnection, stopConnection, sendMessageToChannel, messagesByDate} = rootStore.messageStore
+    const {friend} = rootStore.friendStore
+    const {createHubConnection, stopConnection, 
+        sendMessageToChannel, sendMessageToFriend, messagesByDate} = rootStore.messageStore
 
     useEffect(() => {
-        if(channel != null){
+        if(channel != null && friend == null){
             createHubConnection(channel.id)
+        }
+        if(friend != null && channel == null){
+            createHubConnection(friend.friendshipID)
         }
         return(() => {
             stopConnection()
         })
-    }, [createHubConnection, stopConnection, channel])
+    }, [createHubConnection, stopConnection, channel, friend])
 
-    if(channel == null) return <Unselected />
+    if(channel == null && friend == null) return <Unselected />
 
     return (
         <div className='content'>
-            <ChatHeader name={channel.name} />
+            {channel && <ChatHeader name={channel.name} />}
+            {friend && <ChatHeader name={friend.displayName} />}
             <div className='message-container'>
                 <Message
                     messages={messagesByDate!}
                 />
             </div>
-            <MessageField
+            {channel && <MessageField
                 name={channel.name}
                 sendMessage={sendMessageToChannel}
-            />
+            />}
+            {friend && <MessageField
+                name={friend.displayName}
+                sendMessage={sendMessageToFriend}
+            />}
         </div>
     )
 }
